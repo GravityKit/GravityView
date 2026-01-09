@@ -26,10 +26,13 @@ $order_by = apply_filters( 'gk/gravityview/metaboxes/data-source/order-by', 'tit
 $forms = GVCommon::get_forms_as_options( null, false, $order_by );
 
 /**
- * @param int    $current_form Form currently selected in the View (0 if none selected)
- * @param array  $forms Array of active forms, not in trash
+ * Fires before the Data Source metabox content is rendered.
+ *
  * @since 1.22.1
- * @since 2.39   Modified the $forms array to only include the form ID as key and title as value, not full form objects.
+ * @since 2.39 Modified the $forms array to only include the form ID as key and title as value, not full form objects.
+ *
+ * @param int   $current_form Form currently selected in the View (0 if none selected).
+ * @param array $forms        Array of active forms, not in trash.
  */
 do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 
@@ -97,9 +100,12 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 <?php
 
 /**
- * @param int    $current_form Form currently selected in the View (0 if none selected)
- * @param array  $forms Array of active forms, not in trash
+ * Fires after the Data Source metabox content is rendered.
+ *
  * @since 1.22.1
- * @since 2.39   Modified the $forms array to only include the form ID and title, not full form objects.
+ * @since 2.39 Modified the $forms array to only include the form ID and title, not full form objects.
+ *
+ * @param int   $current_form Form currently selected in the View (0 if none selected).
+ * @param array $forms        Array of active forms, not in trash.
  */
 do_action( 'gravityview/metaboxes/data-source/after', $current_form, $forms );

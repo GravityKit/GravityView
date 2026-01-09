@@ -166,12 +166,12 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 		 * Modify the search parameters before the entries are fetched.
 		 *
 		 * @since 1.11
+		 * @since 2.0 Added $gravityview parameter.
 		 *
-		 * @param array $criteria Gravity Forms search criteria array, as used by GVCommon::get_entries()
-		 * @param array $view_settings Associative array of settings with plugin defaults used if not set by the View
-		 * @param int $form_id The Gravity Forms ID
-		 * @since 2.0
-		 * @param \GV\Template_Context $gravityview The context
+		 * @param array                $criteria      Gravity Forms search criteria array, as used by GVCommon::get_entries().
+		 * @param array                $view_settings Associative array of settings with plugin defaults used if not set by the View.
+		 * @param int                  $form_id       The Gravity Forms ID.
+		 * @param \GV\Template_Context $gravityview   The context.
 		 */
 		$criteria = apply_filters( 'gravityview/field/other_entries/criteria', $search_criteria, $context->view->settings->as_atts(), $context->view->form->ID, $context );
 

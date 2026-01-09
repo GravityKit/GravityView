@@ -19,11 +19,12 @@ $field_settings = $gravityview->field->as_configuration();
  * Override whether to show the value or the label of a Select field.
  *
  * @since 1.5.2
- * @param bool $show_label True: Show the label of the Choice; False: show the value of the Choice. Default: `false`
- * @param array $entry GF Entry
- * @param GF_Field_Select $field Gravity Forms Select field
- * @since 2.0
- * @param \GV\Template_Context $gravityview The context
+ * @since 2.0 Added $gravityview parameter.
+ *
+ * @param bool                 $show_label  True: Show the label of the Choice; False: show the value of the Choice. Default: false.
+ * @param array                $entry       GF Entry.
+ * @param GF_Field_Select      $field       Gravity Forms Select field.
+ * @param \GV\Template_Context $gravityview The template context.
  */
 $show_label = apply_filters( 'gravityview/fields/select/output_label', ( 'label' === \GV\Utils::get( $field_settings, 'choice_display' ) ), $entry, $field, $gravityview );
 

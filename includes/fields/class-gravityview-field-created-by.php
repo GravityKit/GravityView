@@ -167,6 +167,8 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	 * @return string The input HTML.
 	 */
 	public function get_field_input( array $form, $value, array $entry, GF_Field $field ): string {
+		GravityView_Change_Entry_Creator::enqueue_selectwoo_assets_frontend();
+
 		return sprintf(
 			'<div class="ginput_container">%s</div>',
 			GravityView_Change_Entry_Creator::get_select_field( $entry )

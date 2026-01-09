@@ -1,18 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { createView, publishView, checkViewOnFrontEnd, templates } from '../../helpers/test-helpers';
-import path from 'path';
+import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePath } from '../../helpers/test-helpers';
 
 /**
  * Ensures that uploaded files are not lost when a validation error occurs during entry editing.
  */
-test('File persistence during entry edit validation', async ({ page }) => {
+test('File persistence during entry edit validation', async ({ page }, testInfo) => {
   await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
   await createView(page, {
     formTitle: 'Weather Multi-Upload Form',
     viewName: 'File Persistence Test',
     template: templates[0]
-  });
+  }, testInfo);
 
   await publishView(page);
   await checkViewOnFrontEnd(page);
@@ -24,12 +23,12 @@ test('File persistence during entry edit validation', async ({ page }) => {
 
   await page.getByLabel('Name(Required)').fill('');
 
-  const windImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/wind.jpg');
+  const windImagePath = getTestImagePath('wind.jpg');
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');
   await fileInput.setInputFiles(windImagePath);
 
-  await expect(page.getByText(/wind\.jpg/i)).toBeVisible();
+  await expect(page.getByText('wind.jpg', { exact: true })).toBeVisible();
 
   let uploadInProgress = true;
   page.on('dialog', async dialog => {

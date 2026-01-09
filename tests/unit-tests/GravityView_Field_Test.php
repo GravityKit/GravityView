@@ -484,6 +484,162 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Test name field respects isHidden setting for inputs.
+	 *
+	 * When a name field input (prefix, first, middle, last, suffix) is marked
+	 * as hidden in Gravity Forms, it should not appear in the display output.
+	 *
+	 * @covers templates/fields/field-name-html.php
+	 */
+	function test_name_field_respects_hidden_inputs() {
+		$form_id = $this->factory->form->create( [
+			'fields' => [
+				GF_Fields::create( [
+					'type'   => 'name',
+					'id'     => 15,
+					'inputs' => [
+						[ 'id' => '15.2', 'label' => 'Prefix', 'isHidden' => true ],
+						[ 'id' => '15.3', 'label' => 'First', 'isHidden' => true ],
+						[ 'id' => '15.4', 'label' => 'Middle', 'isHidden' => true ],
+						[ 'id' => '15.6', 'label' => 'Last', 'isHidden' => false ],
+						[ 'id' => '15.8', 'label' => 'Suffix', 'isHidden' => true ],
+					],
+				] ),
+			],
+		] );
+
+		$form = GFAPI::get_form( $form_id );
+
+		$entry = $this->factory->entry->create_and_get( [
+			'form_id' => $form_id,
+			'15.2'    => 'Mr.',
+			'15.3'    => 'John',
+			'15.4'    => 'Middle',
+			'15.6'    => 'Doe',
+			'15.8'    => 'Jr.',
+			'status'  => 'active',
+		] );
+
+		// Mock the template context with all name parts.
+		$value = [
+			'15.2' => 'Mr.',
+			'15.3' => 'John',
+			'15.4' => 'Middle',
+			'15.6' => 'Doe',
+			'15.8' => 'Jr.',
+		];
+
+		$gf_field = $form['fields'][0];
+
+		// Use anonymous class so as_configuration() is a callable method.
+		$field_mock = new class( $gf_field ) {
+			public $ID = 15;
+			public $field;
+			public function __construct( $field ) {
+				$this->field = $field;
+			}
+			public function as_configuration() {
+				return [];
+			}
+		};
+
+		$gravityview = (object) [
+			'template'      => 'table',
+			'field'         => $field_mock,
+			'value'         => $value,
+			'display_value' => 'Mr. John Middle Doe Jr.',
+			'entry'         => \GV\GF_Entry::from_entry( $entry ),
+		];
+
+		ob_start();
+		include( GRAVITYVIEW_DIR . 'templates/fields/field-name-html.php' );
+		$output = ob_get_clean();
+
+		// Should only show "Doe" (the only non-hidden input).
+		$this->assertStringContainsString( 'Doe', $output );
+		$this->assertStringNotContainsString( 'Mr.', $output );
+		$this->assertStringNotContainsString( 'John', $output );
+		$this->assertStringNotContainsString( 'Middle', $output );
+		$this->assertStringNotContainsString( 'Jr.', $output );
+	}
+
+	/**
+	 * Test name field shows all inputs when none are hidden.
+	 *
+	 * @covers templates/fields/field-name-html.php
+	 */
+	function test_name_field_shows_all_when_none_hidden() {
+		$form_id = $this->factory->form->create( array(
+			'fields' => array(
+				GF_Fields::create( array(
+					'type'   => 'name',
+					'id'     => 15,
+					'inputs' => array(
+						array( 'id' => '15.2', 'label' => 'Prefix', 'isHidden' => false ),
+						array( 'id' => '15.3', 'label' => 'First', 'isHidden' => false ),
+						array( 'id' => '15.4', 'label' => 'Middle', 'isHidden' => false ),
+						array( 'id' => '15.6', 'label' => 'Last', 'isHidden' => false ),
+						array( 'id' => '15.8', 'label' => 'Suffix', 'isHidden' => false ),
+					),
+				) ),
+			),
+		) );
+
+		$form = GFAPI::get_form( $form_id );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form_id,
+			'15.2'    => 'Mr.',
+			'15.3'    => 'John',
+			'15.4'    => 'Middle',
+			'15.6'    => 'Doe',
+			'15.8'    => 'Jr.',
+			'status'  => 'active',
+		) );
+
+		$value = array(
+			'15.2' => 'Mr.',
+			'15.3' => 'John',
+			'15.4' => 'Middle',
+			'15.6' => 'Doe',
+			'15.8' => 'Jr.',
+		);
+
+		$gf_field = $form['fields'][0];
+
+		// Use anonymous class so as_configuration() is a callable method.
+		$field_mock = new class( $gf_field ) {
+			public $ID = 15;
+			public $field;
+			public function __construct( $field ) {
+				$this->field = $field;
+			}
+			public function as_configuration() {
+				return array();
+			}
+		};
+
+		$gravityview = (object) array(
+			'template'      => 'table',
+			'field'         => $field_mock,
+			'value'         => $value,
+			'display_value' => 'Mr. John Middle Doe Jr.',
+			'entry'         => \GV\GF_Entry::from_entry( $entry ),
+		);
+
+		ob_start();
+		include( GRAVITYVIEW_DIR . 'templates/fields/field-name-html.php' );
+		$output = ob_get_clean();
+
+		// Should show all parts.
+		$this->assertStringContainsString( 'Mr.', $output );
+		$this->assertStringContainsString( 'John', $output );
+		$this->assertStringContainsString( 'Middle', $output );
+		$this->assertStringContainsString( 'Doe', $output );
+		$this->assertStringContainsString( 'Jr.', $output );
+	}
+
+	/**
 	 * Test time field displays correctly regardless of server/WP timezone differences.
 	 *
 	 * @covers templates/fields/field-time-html.php

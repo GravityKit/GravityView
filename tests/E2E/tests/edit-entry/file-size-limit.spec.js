@@ -1,19 +1,18 @@
 import { test, expect } from '@playwright/test';
-import { createView, publishView, checkViewOnFrontEnd, templates } from '../../helpers/test-helpers';
-import path from 'path';
+import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePath } from '../../helpers/test-helpers';
 
 /**
  * Ensures that files exceeding the maximum allowed upload size are rejected when editing an entry.
  * Also verifies that the file does not persist after a validation error is triggered elsewhere in the form.
  */
-test('File size limit validation during entry edit', async ({ page }) => {
+test('File size limit validation during entry edit', async ({ page }, testInfo) => {
   await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
   await createView(page, {
     formTitle: 'Weather Multi-Upload Form',
     viewName: 'File Size Limit Test',
     template: templates[0]
-  });
+  }, testInfo);
 
   await publishView(page);
   await checkViewOnFrontEnd(page);
@@ -21,14 +20,14 @@ test('File size limit validation during entry edit', async ({ page }) => {
   await page.getByRole('link', { name: 'Thursday Weather' }).click();
   await page.getByRole('link', { name: 'Edit Entry' }).click();
 
-  const largeFilePath = path.join(__dirname, '../../helpers/gf-importer/data/images/thunderstorm.jpg');
+  const largeFilePath = getTestImagePath('thunderstorm.jpg');
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');
   await fileInput.setInputFiles(largeFilePath);
 
   await expect(page.getByText(/File exceeds size limit/i)).toBeVisible();
 
-  const validImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/fog.jpg');
+  const validImagePath = getTestImagePath('fog.jpg');
   await fileInput.setInputFiles(validImagePath);
 
   await expect(page.getByText('fog.jpg', { exact: true })).toBeVisible();

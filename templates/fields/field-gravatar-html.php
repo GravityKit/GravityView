@@ -29,8 +29,10 @@ $settings['args'] = array(
 /**
  * Modify the Gravatar settings for the field.
  *
- * @param $settings array Settings passed to {@see get_avatar()} for parameters.
- * @param \GV\Template_Context $gravityview Current context
+ * @since 2.8
+ *
+ * @param array                $settings    Settings passed to {@see get_avatar()} for parameters.
+ * @param \GV\Template_Context $gravityview The template context.
  */
 $settings = apply_filters( 'gravityview/fields/gravatar/settings', $settings, $gravityview );
 

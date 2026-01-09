@@ -50,21 +50,22 @@ if ( ! $gf_field ) {
 }
 
 /**
- * Prevent Chained Select Search Bar input fields from outputting styles.
+ * Modifies the alignment of the Chained Select Search Bar input fields.
  *
  * @since 2.14.4
- * @param GravityView_Widget_Search $this GravityView Widget instance
- * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
+ *
+ * @param string $search_layout The search layout. Default: 'horizontal' or 'vertical'.
+ * @param array  $search_field  The search field configuration array.
  */
 $alignment = apply_filters( 'gravityview/search/chained_selects/alignment', $search_layout, $search_field );
 
 /**
- * Choose whether to hide inactive dropdowns in the chain.
+ * Chooses whether to hide inactive dropdowns in the chain.
  *
  * @since 2.14.4
- * @param bool $hide_inactive Whether to hide drop-downs that aren't available yet.
- * @param GravityView_Widget_Search $this GravityView Widget instance
- * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
+ *
+ * @param bool  $hide_inactive Whether to hide drop-downs that aren't available yet. Default: false.
+ * @param array $search_field  The search field configuration array.
  */
 $hide_inactive = apply_filters( 'gravityview/search/chained_selects/hide_inactive', false, $search_field );
 

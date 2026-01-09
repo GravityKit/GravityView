@@ -319,12 +319,11 @@ abstract class Field_Template extends Template {
 		$context = Template_Context::from_template( $this, compact( 'display_value', 'value' ) );
 
 		/**
-		 * Make various pieces of data available to the template
-		 *  under the $gravityview scoped variable.
+		 * Make various pieces of data available to the template under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/field/context`
-		 * @param \GV\Template_Context $context The context for this template.
 		 * @since 2.0
+		 *
+		 * @param \GV\Template_Context $context The context for this template.
 		 */
 		$this->push_template_data( apply_filters( 'gravityview/template/field/context', $context ), 'gravityview' );
 
@@ -337,16 +336,20 @@ abstract class Field_Template extends Template {
 			/**
 			 * What to display when a field is empty.
 			 *
-			 * @deprecated Use the `gravityview/field/value/empty` filter instead
-			 * @param string $value (empty string)
+			 * @since 1.0.5
+			 * @deprecated Use the `gravityview/field/value/empty` filter instead.
+			 *
+			 * @param string $value (empty string).
 			 */
 			$output = apply_filters( 'gravityview_empty_value', $output );
 
 			/**
 			 * What to display when this field is empty.
 			 *
-			 * @param string $value The value to display (Default: empty string)
-			 * @param \GV\Template_Context The template context this is being called from.
+			 * @since 2.0
+			 *
+			 * @param string               $value   The value to display. Default: empty string.
+			 * @param \GV\Template_Context $context The template context this is being called from.
 			 */
 			$output = apply_filters( 'gravityview/field/value/empty', $output, Template_Context::from_template( $this ) );
 
@@ -418,22 +421,25 @@ abstract class Field_Template extends Template {
 
 				/**
 				 * Modify the link HTML.
-    			 *
-				 * @param string $link HTML output of the link
-				 * @param string $href URL of the link
-				 * @param array  $entry The GF entry array
-				 * @param array $field_settings Settings for the particular GV field
-				 * @deprecated Use `gravityview/template/field/entry_link`
+				 *
+				 * @since 1.10
+				 * @deprecated Use `gravityview/template/field/entry_link` instead.
+				 *
+				 * @param string $link           HTML output of the link.
+				 * @param string $href           URL of the link.
+				 * @param array  $entry          The GF entry array.
+				 * @param array  $field_settings Settings for the particular GV field.
 				 */
 				$output = apply_filters( 'gravityview_field_entry_link', $output, $permalink, $context->entry->as_entry(), $field->as_configuration() );
 
 				/**
 				 * Modify the link HTML.
-    			 *
+				 *
 				 * @since 2.0
-				 * @param string $link HTML output of the link
-				 * @param string $href URL of the link
-				 * @param \GV\Template_Context $context The context
+				 *
+				 * @param string               $link    HTML output of the link.
+				 * @param string               $href    URL of the link.
+				 * @param \GV\Template_Context $context The context.
 				 */
 				$output = apply_filters( 'gravityview/template/field/entry_link', $output, $permalink, $context );
 			}
@@ -461,12 +467,14 @@ abstract class Field_Template extends Template {
 			/**
 			 * Modify the field value output for all field types.
 			 *
-			 * @param string $output HTML value output
-			 * @param array  $entry The GF entry array
-			 * @param  array $field_settings Settings for the particular GV field
-			 * @param array $field_data  {@since 1.6}
-			 *
+			 * @since 1.0
+			 * @since 1.6 Added the `$field_data` parameter.
 			 * @deprecated Use the `gravityview/field/{$field_type}/output` or `gravityview/field/output` filters instead.
+			 *
+			 * @param string $output         HTML value output.
+			 * @param array  $entry          The GF entry array.
+			 * @param array  $field_settings Settings for the particular GV field.
+			 * @param array  $field_data     Field data array.
 			 */
 			$output = apply_filters( 'gravityview_field_entry_value', $output, $context->entry->as_entry(), $field->as_configuration(), $field_compat );
 
@@ -475,8 +483,8 @@ abstract class Field_Template extends Template {
 			 *
 			 * @since 2.0
 			 *
-			 * @param string $output The current output.
-			 * @param \GV\Template_Context The template context this is being called from.
+			 * @param string               $output  The current output.
+			 * @param \GV\Template_Context $context The template context this is being called from.
 			 */
 			return apply_filters( "gravityview/template/field/{$field->type}/output", $output, $context );
 		};
@@ -505,8 +513,8 @@ abstract class Field_Template extends Template {
 		 *
 		 * @since 2.0
 		 *
-		 * @param string $output The current output.
-		 * @param \GV\Template_Context The template this is being called from.
+		 * @param string               $output  The current output.
+		 * @param \GV\Template_Context $context The template context this is being called from.
 		 */
 		echo apply_filters( 'gravityview/template/field/output', $output, $context );
 

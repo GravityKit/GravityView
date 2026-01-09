@@ -274,12 +274,12 @@ class GravityView_Render_Settings {
 		 *
 		 * @filter `gravityview_template_{$field_type}_options`
 		 *
-		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
-		 * @param string $template_id Table slug
-		 * @param float  $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-		 * @param string $context     What context are we in? Example: `single` or `directory`
-		 * @param string $input_type  (textarea, list, select, etc.)
-		 * @param int    $form_id     The form ID. {@since 2.5}
+		 * @param array  $field_options Array of field options with `label`, `value`, `type`, `default` keys.
+		 * @param string $template_id   Table slug.
+		 * @param float  $field_id      GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`.
+		 * @param string $context       What context are we in? Example: `single` or `directory`.
+		 * @param string $input_type    (textarea, list, select, etc.).
+		 * @param int    $form_id       The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
@@ -288,12 +288,12 @@ class GravityView_Render_Settings {
 		 *
 		 * @filter `gravityview_template_{$input_type}_options`
 		 *
-		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
-		 * @param string $template_id Table slug
-		 * @param float  $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-		 * @param string $context     What context are we in? Example: `single` or `directory`
-		 * @param string $input_type  (textarea, list, select, etc.)
-		 * @param int    $form_id     The form ID. {@since 2.5}
+		 * @param array  $field_options Array of field options with `label`, `value`, `type`, `default` keys.
+		 * @param string $template_id   Table slug.
+		 * @param float  $field_id      GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`.
+		 * @param string $context       What context are we in? Example: `single` or `directory`.
+		 * @param string $input_type    (textarea, list, select, etc.).
+		 * @param int    $form_id       The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
@@ -314,7 +314,7 @@ class GravityView_Render_Settings {
 		 *
 		 * @since  2.32.0
 		 *
-		 * @filter `gravityview_template_{$input_type}_options`
+		 * @filter `gk/gravityview/template/options`
 		 *
 		 * @param array            $field_options Array of field options with `label`, `value`, `type`, `default` keys.
 		 * @param 'widget'|'field' $field_type    The field type (`widget` or `field`).
@@ -483,7 +483,9 @@ class GravityView_Render_Settings {
 				$value = $current[ $key ] ?? null;
 
 				/**
-				 * @action `gk/gravityview/template/before-field-render` which allows you to act before a field of an item is rendered.
+				 * Fires before a field of an item is rendered.
+				 *
+				 * @action `gk/gravityview/template/before-field-render`
 				 *
 				 * @since  2.42
 				 *

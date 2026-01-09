@@ -9,7 +9,7 @@ import {
 /**
  * Verifies accurate redirection after editing an entry.
  */
-test('Verify Redirect After Editing', async ({ page }) => {
+test('Verify Redirect After Editing', async ({ page }, testInfo) => {
 	let singleEntryURL;
 
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
@@ -19,7 +19,7 @@ test('Verify Redirect After Editing', async ({ page }) => {
 			formTitle: 'Event Registration',
 			viewName: 'Verify Redirect After Editing Test',
 			template: templates[0]
-		});
+		}, testInfo);
 	});
 
 	await test.step('Set redirection after editing to "Redirect to Single Entry" and publish the View', async () => {

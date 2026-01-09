@@ -38,8 +38,9 @@ abstract class Request {
 		 * Is this request renderable?
 		 *
 		 * @since 2.5.2
-		 * @param boolean $is_renderable Huh?
-		 * @param \GV\Request $this This.
+		 *
+		 * @param bool        $is_renderable Whether the request is renderable.
+		 * @param \GV\Request $request       The Request object.
 		 */
 		return apply_filters( 'gravityview/request/is_renderable', $is_renderable, $this );
 	}
@@ -219,13 +220,12 @@ abstract class Request {
 
 		/**
 		 * Checks whether we're currently on the Edit Entry screen.
+		 *
 		 * The Edit Entry functionality overrides this value.
 		 *
-		 * @filter `gravityview_is_edit_entry`
+		 * @since 2.0-beta.2
 		 *
-		 * @since v2.0-beta.2
-		 *
-		 * @param boolean $is_edit_entry
+		 * @param bool $is_edit_entry Whether the current request is an Edit Entry request. Default: false.
 		 */
 		if ( $entry && apply_filters( 'gravityview_is_edit_entry', false ) ) {
 			if ( $entry->is_multi() ) {

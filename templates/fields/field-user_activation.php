@@ -46,10 +46,13 @@ if ( is_wp_error( $user_activation ) ) {
 
 
 /**
- * @action `gravityview/field/user_activation/load_scripts`Runs before the User Activation link is output.
- * @used-by \GravityView_Field_User_Activation::enqueue_and_localize_script()
+ * Runs before the User Activation link is output.
+ *
  * @since 2.33
- * @param \GV\Template_Context $gravityview The context
+ *
+ * @see \GravityView_Field_User_Activation::enqueue_and_localize_script()
+ *
+ * @param \GV\Template_Context $gravityview The template context.
  */
 do_action( 'gravityview/field/user_activation/load_scripts', $gravityview );
 

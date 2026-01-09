@@ -175,9 +175,8 @@ class GravityView_Edit_Entry_Locking {
 
 		/**
 		 * Overrides whether to load the entry lock UI assets.
-		 * This filter runs before checking whether if the edit entry link is valid, user has the capability to edit the entry, etc.
 		 *
-		 * Filter: `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets`
+		 * This filter runs before checking whether if the edit entry link is valid, user has the capability to edit the entry, etc.
 		 *
 		 * @since 2.34.1
 		 *
@@ -391,9 +390,7 @@ class GravityView_Edit_Entry_Locking {
 		/**
 		 * Modifies the edit entry lock UI markup.
 		 *
-		 * @filter `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup`
-		 *
-		 * @since  2.34.1
+		 * @since 2.34.1
 		 *
 		 * @param string $html The HTML markup.
 		 */

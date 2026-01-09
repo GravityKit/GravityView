@@ -21,6 +21,33 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.50 on January 8, 2026 =
+
+This release improves error messaging for administrators, adds custom CSS/JavaScript placeholders for View-specific styling, and fixes Edit Entry functionality, REST API access handling, PHP 8.4 compatibility issues, and more.
+
+#### ✨ Improved
+* Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
+* Custom CSS and JavaScript settings now support placeholders that are automatically replaced with View-specific values. This makes it easy to write custom styles that apply to a single View without affecting others on the same page. [Read about the new placeholders](https://docs.gravitykit.com/article/246-adding-custom-css-to-your-website#:~:text=Available%20placeholders).
+* The "Created By" field on the Edit Entry page now includes AJAX-powered search, making it easy to find and select users.
+
+#### 🐛 Fixed
+* JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
+* Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
+* Multi-column List fields on the Edit Entry page displayed serialized array data (e.g., `a:1:{i:0;s:0:"";}`) instead of remaining empty when revealed via conditional logic.
+* REST API requests for single entries now properly respect View settings like "Prevent Direct Access" and REST API restrictions.
+* PHP 8.4 implicit nullable parameter deprecation warnings.
+* Name field now respects hidden input settings configured in Gravity Forms (e.g., hiding Prefix, Middle Name or Suffix).
+* Some hooks were not removed when switching lightbox provider.
+* Merge tag picker not appearing in the View editor when Yoast SEO Premium is active.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.1.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/custom-code/placeholders` filter to modify or add custom placeholders for the Custom CSS and JavaScript settings.
+* The `VIEW_SELECTOR` placeholder is hard-coded to `.gv-container.gv-container-{view id}`. If you have removed those classes by using the `gravityview/render/container/class` filter, the `VIEW_SELECTOR` placeholder will not work as expected; use the `VIEW_ID` placeholder instead.
+* View Custom CSS and JavaScript is now output only once per View, even when the same View is embedded multiple times on a page.
+
 = 2.49 on December 5, 2025 =
 
 This update adds a new merge tag modifier for improved URL encoding and resolves a WordPress 6.9 compatibility issue affecting classic themes.
@@ -94,7 +121,16 @@ This release addresses multiple issues impacting search fields, Edit Entry behav
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.2.
 
 #### 💻 Developer Updates
-* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
+* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic,  or modify the View Collection before it is returned.
+* Improved error message handling with centralized `GravityView_Error_Messages` class:
+  - Error messages now differentiate between administrators (actionable links) and regular users (generic messages) to prevent information disclosure.
+  - Entry permission checks moved to `GV\Entry::check_access()` for better encapsulation.
+  - All error codes standardized to `snake_case` for consistency with WordPress core conventions.
+* Enhanced security of error messages by properly escaping all translatable strings using `esc_html__()` and `wp_kses_post()`.
+* Improved code quality and type safety:
+  - Removed redundant `as_entry()` conversions where objects are already `GV\Entry` instances.
+  - Added safe array access using `GV\Utils::get()` to prevent undefined index errors.
+  - Fixed type confusion between `GV\Entry` objects and raw entry arrays.
 
 = 2.48.1 on October 9, 2025 =
 

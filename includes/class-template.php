@@ -533,7 +533,8 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		 * Modify the displayed pagination numbers.
 		 *
 		 * @since 1.13
-		 * @param array $counts Array with $first, $last, $total numbers in that order
+		 *
+		 * @param array $counts Array with `$first`, `$last`, `$total` numbers in that order.
 		 */
 		[ $first, $last, $total ] = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
 
@@ -712,9 +713,11 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			/**
 			 * Modify the fields displayed in a table.
 			 *
-			 * @param array $fields
-			 * @param \GravityView_View $this
-			 * @deprecated Use `gravityview/template/table/fields`
+			 * @since 2.0.6.1
+			 * @deprecated Use `gravityview/template/table/fields` instead.
+			 *
+			 * @param array             $fields Array of field configurations.
+			 * @param \GravityView_View $this   The current View object.
 			 */
 			$fields = apply_filters( 'gravityview_table_cells', $fields, $this );
 		}
@@ -734,13 +737,15 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		}
 
 		/**
-		 * If a zone has no field output, choose whether to show wrapper
-		 * False by default to keep backward compatibility
+		 * If a zone has no field output, choose whether to show wrapper.
+		 *
+		 * False by default to keep backward compatibility.
 		 *
 		 * @since 1.7.6
-		 * @param boolean $hide_empty_zone Default: false
-		 * @since 2.0
-		 * @param \GV\Template_Context $context The context. Null here. Since this path is deprecated.
+		 * @since 2.0 Added $context parameter.
+		 *
+		 * @param bool                       $hide_empty_zone Default: false.
+		 * @param \GV\Template_Context|null  $context         The context. Null here since this path is deprecated.
 		 */
 		if ( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false, null ) ) {
 			return null;
@@ -1007,9 +1012,10 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		 * The CSS class applied to the widget container div.
 		 *
 		 * @since 1.16.2
-		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value. If the View has no results, adds ` gv-widgets-no-results`
-		 * @param string $zone Current widget zone, either `header` or `footer`
-		 * @param array $widgets Array of widget configurations for the current zone, as set by `gravityview_get_current_view_data()['widgets']`
+		 *
+		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value. If the View has no results, adds ` gv-widgets-no-results`.
+		 * @param string $zone Current widget zone, either `header` or `footer`.
+		 * @param array  $widgets Array of widget configurations for the current zone.
 		 */
 		$css_class = apply_filters( 'gravityview/widgets/wrapper_css_class', $default_css_class, $zone, $widgets->as_configuration() );
 
