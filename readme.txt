@@ -38,6 +38,7 @@ This release improves error messaging for administrators, addresses a performanc
 * PHP 8.4 implicit nullable parameter deprecation warnings.
 * Name field now respects hidden input settings configured in Gravity Forms (e.g., hiding Prefix, Middle Name or Suffix).
 * Some hooks were not removed when switching lightbox provider.
+* Merge tag picker not appearing in the View editor when Yoast SEO Premium is active.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.1.
