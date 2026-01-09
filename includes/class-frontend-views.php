@@ -1872,7 +1872,7 @@ class GravityView_frontend {
 	 * - `VIEW_ID`: Replaced with the View ID.
 	 * - `VIEW_SELECTOR`: Replaced with a high-specificity CSS class selector (`.gv-container.gv-container-{view_id}`).
 	 *
-	 * @since $ver$
+	 * @since 2.50.0
 	 *
 	 * @param string   $content The custom CSS or JavaScript content containing placeholders.
 	 * @param \GV\View $view    The View object to get replacement values from.
@@ -1904,7 +1904,7 @@ class GravityView_frontend {
 		/**
 		 * Filters the placeholders available for custom CSS and JavaScript code.
 		 *
-		 * @since TODO
+		 * @since 2.50.0
 		 *
 		 * @param array    $placeholders Associative array of placeholder => replacement value pairs.
 		 * @param \GV\View $view         The View object.
