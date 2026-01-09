@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/lock-dialog/show-request-control` filter to control visibility of the Request Control button in the entry lock dialog.
+
 = 2.50 on January 8, 2026 =
 
 This release improves error messaging for administrators, adds custom CSS/JavaScript placeholders for View-specific styling, and fixes Edit Entry functionality, REST API access handling, PHP 8.4 compatibility issues, and more.
