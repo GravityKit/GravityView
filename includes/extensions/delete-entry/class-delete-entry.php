@@ -377,10 +377,8 @@ final class GravityView_Delete_Entry {
 			return;
 		}
 
-		// Make sure it's a GravityView request
-		$valid_nonce_key = wp_verify_nonce( $get_fields['delete'], self::get_nonce_key( $get_fields['entry_id'] ) );
-
-		if ( ! $valid_nonce_key ) {
+		// Make sure it's a GravityView request.
+		if ( ! $this->verify_nonce() ) {
 			gravityview()->log->debug( 'Delete entry not processed: nonce validation failed.' );
 
 			return;
