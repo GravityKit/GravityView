@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/can-delete` filter to control whether a user can delete an entry.
+
 = 2.50 on January 8, 2026 =
 
 This release improves error messaging for administrators, adds custom CSS/JavaScript placeholders for View-specific styling, and fixes Edit Entry functionality, REST API access handling, PHP 8.4 compatibility issues, and more.

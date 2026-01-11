@@ -817,6 +817,21 @@ final class GravityView_Delete_Entry {
 			}
 		}
 
+		/**
+		 * Filters whether the current user can delete the entry.
+		 *
+		 * @since TBD
+		 *
+		 * @param bool  $user_can_delete Can the current user delete the current entry? Default: false.
+		 * @param array $entry           Gravity Forms entry array.
+		 * @param int   $view_id         ID of the View.
+		 */
+		$user_can_delete = apply_filters( 'gk/gravityview/delete-entry/can-delete', false, $entry, $view ? $view->ID : 0 );
+
+		if ( $user_can_delete ) {
+			return true;
+		}
+
 		if ( ! isset( $entry['created_by'] ) ) {
 			gravityview()->log->error( 'Entry property `created_by` doesn\'t exist.' );
 
