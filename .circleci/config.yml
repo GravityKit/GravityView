@@ -118,6 +118,11 @@ jobs:
       - run:
           name: Build and package
           command: |
+            # Clean vendor directories to ensure fresh composer install.
+            # This is necessary because foundation_cleanup deletes the Foundation
+            # post-install script during test preparation, but the build needs it
+            # to namespace the illuminate/support helpers.php file.
+            rm -rf vendor vendor_prefixed
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
             /home/circleci/tooling/build-tools/build_tools.sh grunt
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
