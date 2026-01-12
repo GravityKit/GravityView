@@ -734,13 +734,10 @@ SQL;
 			}
 		}
 
-		// Has the form been flagged as having changed items in it?
-		if ( ! $use_cache && $this->in_blocklist() ) {
-
-			// Delete caches for all items with form IDs XYZ
+		// Only clear cache when caching is enabled AND form is in blocklist.
+		if ( $use_cache && $this->in_blocklist() ) {
 			$this->delete( $this->form_ids );
 
-			// Remove the form from
 			$this->blocklist_remove( $this->form_ids );
 		}
 

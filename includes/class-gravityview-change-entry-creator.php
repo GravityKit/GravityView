@@ -69,6 +69,24 @@ class GravityView_Change_Entry_Creator {
 			return;
 		}
 
+		self::enqueue_selectwoo_assets_internal();
+	}
+
+	/**
+	 * Enqueues selectWoo script and style for frontend Edit Entry.
+	 *
+	 * @since 2.50.0
+	 */
+	public static function enqueue_selectwoo_assets_frontend() {
+		self::enqueue_selectwoo_assets_internal();
+	}
+
+	/**
+	 * Enqueues selectWoo script and style.
+	 *
+	 * @since 2.50.0
+	 */
+	private static function enqueue_selectwoo_assets_internal() {
 		$version      = \GV\Plugin::$version;
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 

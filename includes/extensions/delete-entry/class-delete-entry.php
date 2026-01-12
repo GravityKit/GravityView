@@ -377,10 +377,8 @@ final class GravityView_Delete_Entry {
 			return;
 		}
 
-		// Make sure it's a GravityView request
-		$valid_nonce_key = wp_verify_nonce( $get_fields['delete'], self::get_nonce_key( $get_fields['entry_id'] ) );
-
-		if ( ! $valid_nonce_key ) {
+		// Make sure it's a GravityView request.
+		if ( ! $this->verify_nonce() ) {
 			gravityview()->log->debug( 'Delete entry not processed: nonce validation failed.' );
 
 			return;
@@ -815,6 +813,21 @@ final class GravityView_Delete_Entry {
 			if ( GVCommon::has_cap( $field['allow_edit_cap'] ) && 'read' !== $field['allow_edit_cap'] ) {
 				return true;
 			}
+		}
+
+		/**
+		 * Filters whether the current user can delete the entry.
+		 *
+		 * @since TBD
+		 *
+		 * @param bool  $user_can_delete Can the current user delete the current entry? Default: false.
+		 * @param array $entry           Gravity Forms entry array.
+		 * @param int   $view_id         ID of the View.
+		 */
+		$user_can_delete = apply_filters( 'gk/gravityview/delete-entry/can-delete', false, $entry, $view ? $view->ID : 0 );
+
+		if ( $user_can_delete ) {
+			return true;
 		}
 
 		if ( ! isset( $entry['created_by'] ) ) {

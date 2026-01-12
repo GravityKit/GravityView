@@ -12,7 +12,7 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  *
  * @group frontend
  * @group placeholders
- * @since $ver$
+ * @since 2.50.0
  */
 class GravityView_Custom_Code_Placeholders_Test extends GV_UnitTestCase {
 

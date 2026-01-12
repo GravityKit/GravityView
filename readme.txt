@@ -21,13 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.50 on January 5, 2026 =
+= develop =
 
-This release improves error messaging for administrators, addresses a performance issue, fixes REST API handling of View access settings, resolves JavaScript and List field display issues on the Edit Entry page, ensures the Name field display respects hidden input settings configured in Gravity Forms, and improves compatibility with PHP 8.4.
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/can-delete` filter to control whether a user can delete an entry.
+
+= 2.50 on January 8, 2026 =
+
+This release improves error messaging for administrators, adds custom CSS/JavaScript placeholders for View-specific styling, and fixes Edit Entry functionality, REST API access handling, PHP 8.4 compatibility issues, and more.
 
 #### ✨ Improved
 * Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
-* Custom CSS and Custom JavaScript settings now support placeholders that are automatically replaced with View-specific values. This makes it easy to write custom styles that apply to a single View without affecting others on the same page. [Read about the new placeholders.](https://docs.gravitykit.com/article/246-adding-custom-css-to-your-website#:~:text=Available%20placeholders)
+* Custom CSS and JavaScript settings now support placeholders that are automatically replaced with View-specific values. This makes it easy to write custom styles that apply to a single View without affecting others on the same page. [Read about the new placeholders](https://docs.gravitykit.com/article/246-adding-custom-css-to-your-website#:~:text=Available%20placeholders).
+* The "Created By" field on the Edit Entry page now includes AJAX-powered search, making it easy to find and select users.
 
 #### 🐛 Fixed
 * JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
@@ -37,6 +43,7 @@ This release improves error messaging for administrators, addresses a performanc
 * PHP 8.4 implicit nullable parameter deprecation warnings.
 * Name field now respects hidden input settings configured in Gravity Forms (e.g., hiding Prefix, Middle Name or Suffix).
 * Some hooks were not removed when switching lightbox provider.
+* Merge tag picker not appearing in the View editor when Yoast SEO Premium is active.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.1.
