@@ -88,14 +88,12 @@
     "prefix_vendor": "@php strauss.phar",
     "post_update_install": "./composer_post_update_install.sh",
     "post-install-cmd": [
-      "@foundation_compat",
       "@prefix_vendor",
       "@foundation_compat",
       "@post_update_install",
       "composer dump-autoload -o"
     ],
     "post-update-cmd": [
-      "@foundation_compat",
       "@prefix_vendor",
       "@foundation_compat",
       "@post_update_install",
