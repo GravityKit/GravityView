@@ -26,7 +26,7 @@
     "php": ">=7.4.0",
     "ext-json": "*",
     "ext-openssl": "*",
-    "gravitykit/foundation": "dev-main"
+    "gravitykit/foundation": "dev-namespace-test"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.5",
@@ -91,7 +91,6 @@
       "@foundation_compat",
       "@prefix_vendor",
       "@foundation_compat",
-      "@foundation_cleanup",
       "@post_update_install",
       "composer dump-autoload -o"
     ],
@@ -99,13 +98,11 @@
       "@foundation_compat",
       "@prefix_vendor",
       "@foundation_compat",
-      "@foundation_cleanup",
       "@post_update_install",
       "composer dump-autoload -o"
     ],
     "compat": "./vendor/bin/phpcs -p ./ ./gravityview.php ./tests  --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.2- --ignore=vendor/*,vendor_prefixed/*,node_modules/*",
-    "foundation_compat": "[ -f vendor/gravitykit/foundation/composer_post_update_install.sh ] && ( cd vendor/gravitykit/foundation && bash composer_post_update_install.sh ) || true",
-    "foundation_cleanup": "rm -f vendor/gravitykit/foundation/composer_post_update_install.sh"
+    "foundation_compat": "[ -f vendor/gravitykit/foundation/scripts/post-install.php ] && php vendor/gravitykit/foundation/scripts/post-install.php || true"
   },
   "config": {
     "platform-check": false,

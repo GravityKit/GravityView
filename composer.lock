@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8640524c39dda9f5041aac2e4741882c",
+    "content-hash": "caafb4f4dd7f7744b1cb0d4434a78c92",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -234,16 +234,16 @@
         },
         {
             "name": "gravitykit/foundation",
-            "version": "dev-main",
+            "version": "dev-namespace-test",
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "abc07f2a68ff35f478f1aa1eedc8245d35ba7213"
+                "reference": "24a3c1c9824c256d8873f200d91ee3a0ab280e5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/abc07f2a68ff35f478f1aa1eedc8245d35ba7213",
-                "reference": "abc07f2a68ff35f478f1aa1eedc8245d35ba7213",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/24a3c1c9824c256d8873f200d91ee3a0ab280e5c",
+                "reference": "24a3c1c9824c256d8873f200d91ee3a0ab280e5c",
                 "shasum": ""
             },
             "require": {
@@ -320,7 +320,7 @@
                     "vendor/bin/pest --group=unit"
                 ],
                 "post_update_install": [
-                    "./composer_post_update_install.sh"
+                    "@php scripts/post-install.php"
                 ],
                 "post-install-cmd": [
                     "@prefix_vendor",
@@ -343,10 +343,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/main",
+                "source": "https://github.com/GravityKit/Foundation/tree/namespace-test",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2025-12-26T22:53:05+00:00"
+            "time": "2026-01-12T14:08:57+00:00"
         },
         {
             "name": "illuminate/container",
