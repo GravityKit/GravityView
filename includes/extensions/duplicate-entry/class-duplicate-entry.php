@@ -495,8 +495,9 @@ final class GravityView_Duplicate_Entry {
 		 * Modify the new entry details before it's created.
 		 *
 		 * @since 2.5
-		 * @param array $row The entry details
-		 * @param array $entry The original entry
+		 *
+		 * @param array $row   The entry details.
+		 * @param array $entry The original entry.
 		 */
 		$row = apply_filters( 'gravityview/entry/duplicate/details', $row, $entry );
 
@@ -531,9 +532,11 @@ final class GravityView_Duplicate_Entry {
 		/**
 		 * Modify the new entry meta details.
 		 *
+		 * @since 2.5
+		 *
 		 * @param array $save_this_meta The duplicate meta. Use/add meta_key, meta_value, item_index.
-		 * @param array $row The duplicated entry
-		 * @param array $entry The original entry
+		 * @param array $row            The duplicated entry.
+		 * @param array $entry          The original entry.
 		 */
 		$save_this_meta = apply_filters( 'gravityview/entry/duplicate/meta', $save_this_meta, $row, $entry );
 
@@ -556,9 +559,10 @@ final class GravityView_Duplicate_Entry {
 		 * Triggered when an entry is duplicated.
 		 *
 		 * @since 2.5
-		 * @param  array $duplicated_entry The duplicated entry
-		 * @param  array $entry The original entry
-		*/
+		 *
+		 * @param array $duplicated_entry The duplicated entry.
+		 * @param array $entry            The original entry.
+		 */
 		do_action( 'gravityview/duplicate-entry/duplicated', $duplicated_entry, $entry );
 
 		gravityview()->log->debug( 'Duplicate response: {duplicate_response}', array( 'duplicate_response' => $duplicate_response ) );
@@ -588,9 +592,11 @@ final class GravityView_Duplicate_Entry {
 		 * Override Duplicate Entry nonce validation. Return true to declare nonce valid.
 		 *
 		 * @since 2.5
+		 *
 		 * @see wp_verify_nonce()
-		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
-		 * @param string $nonce_key Name of nonce action used in wp\_verify\_nonce. The $\_GET['duplicate'] value holds the nonce value itself. Default: duplicate_{entry_id}
+		 *
+		 * @param int|bool $valid     False if invalid; 1 or 2 when nonce was generated.
+		 * @param string   $nonce_key Name of nonce action used in wp_verify_nonce(). The $_GET['duplicate'] value holds the nonce value itself. Default: duplicate_{entry_id}.
 		 */
 		$valid = apply_filters( 'gravityview/duplicate-entry/verify_nonce', $valid, $nonce_key );
 
@@ -610,6 +616,8 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * Modify the Duplicate Entry Javascript confirmation text (will be sanitized when output).
+		 *
+		 * @since 2.5
 		 *
 		 * @param string $confirm Default: "Are you sure you want to duplicate this entry?". If empty, disable confirmation dialog.
 		 */
@@ -794,9 +802,10 @@ final class GravityView_Duplicate_Entry {
 		 * Modify the Duplicate Entry messages. Allows HTML; will not be further sanitized.
 		 *
 		 * @since 2.5
-		 * @param string $message Message to be displayed, sanitized using esc_attr()
-		 * @param string $status Message status (`error` or `success`)
-		 * @param string $message_from_url The original error message, if any, without the "There was an error duplicating the entry:" prefix
+		 *
+		 * @param string $message          Message to be displayed, sanitized using esc_attr().
+		 * @param string $status           Message status (`error` or `success`).
+		 * @param string $message_from_url The original error message, if any, without the "There was an error duplicating the entry:" prefix.
 		 */
 		$message = apply_filters( 'gravityview/duplicate-entry/message', esc_attr( $message ), $status, $message_from_url );
 
@@ -822,8 +831,10 @@ final class GravityView_Duplicate_Entry {
 		/**
 		 * Disables the duplicate link on the backend.
 		 *
-		 * @param boolean $enable True by default. Enabled.
-		 * @param int $form_id The form ID.
+		 * @since 2.5.1
+		 *
+		 * @param bool $enable  True by default. Enabled.
+		 * @param int  $form_id The form ID.
 		 */
 		if ( ! apply_filters( 'gravityview/duplicate/backend/enable', true, $form_id ) ) {
 			return;

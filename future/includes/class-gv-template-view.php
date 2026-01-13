@@ -130,21 +130,21 @@ abstract class View_Template extends Template {
 		$context = Template_Context::from_template( $this );
 
 		/**
-		 * Make various pieces of data available to the template
-		 *  under the $gravityview scoped variable.
+		 * Make various pieces of data available to the template under the $gravityview scoped variable.
 		 *
-		 * @filter `gravityview/template/view/context`
-		 * @param \GV\Template_Context $context The context for this template.
-		 * @param \GV\View_Template $template The current template.
 		 * @since 2.0
+		 *
+		 * @param \GV\Template_Context $context  The context for this template.
+		 * @param \GV\View_Template    $template The current template.
 		 */
 		$this->push_template_data( $context = apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
 
 		/**
 		 * Before rendering.
 		 *
-		 * @param \GV\View_Template $template The current template.
 		 * @since 2.0
+		 *
+		 * @param \GV\Template_Context $context The context for this template.
 		 */
 		do_action( 'gravityview/template/view/render', $context );
 

@@ -37,6 +37,14 @@ if ( ! GravityView_Duplicate_Entry::check_user_cap_duplicate_entry( $entry, $fie
 
 $link_text = \GV\Utils::get( $field_settings, 'duplicate_link', esc_html__( 'Delete Entry', 'gk-gravityview' ) );
 
+/**
+ * Modify the entry link anchor text.
+ *
+ * @since 1.0-beta
+ *
+ * @param string               $link_text   The link anchor text after merge tag replacement.
+ * @param \GV\Template_Context $gravityview The template context.
+ */
 $link_text = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
 $href = GravityView_Duplicate_Entry::get_duplicate_link( $entry, $gravityview->view->ID, $post ? $post->ID : null );

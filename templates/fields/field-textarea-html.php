@@ -19,8 +19,9 @@ $field_settings = $gravityview->field->as_configuration();
  * Allow the following HTML tags and strip everything else.
  *
  * @since 2.8
- * @param bool $allow_html Whether to allow rendering HTML submitted in the textarea field. If disabled, output will be escaped with esc_html(). Default: true.
- * @param \GV\Template_Context $gravityview The context
+ *
+ * @param bool                 $allow_html  Whether to allow rendering HTML submitted in the textarea field. If disabled, output will be escaped with esc_html(). Default: true.
+ * @param \GV\Template_Context $gravityview The template context.
  */
 $allow_html = apply_filters( 'gravityview/fields/textarea/allow_html', \GV\Utils::get( $field_settings, 'allow_html', true ), $gravityview );
 
@@ -30,12 +31,13 @@ if ( $allow_html ) {
 	 * Allow the following HTML tags and strip everything else.
 	 *
 	 * @since 1.21.5.1
-	 * @since 2.0
-	 * @see wp_kses_allowed_html() For allowed contexts
-	 * @see $allowedposttags global in kses.php for an example of the format for passing an array of allowed tags and atts
+	 * @since 2.0 Added $gravityview parameter.
 	 *
-	 * @param array|string $allowed_html Context string (allowed strings are post, strip, data, entities, or the name of a field filter such as pre_user_description) or allowed tags array (see above). [Default: 'post']
-	 * @param \GV\Template_Context $gravityview The context
+	 * @see wp_kses_allowed_html() For allowed contexts.
+	 * @see $allowedposttags global in kses.php for an example of the format for passing an array of allowed tags and atts.
+	 *
+	 * @param array|string         $allowed_html Context string (allowed strings are post, strip, data, entities, or the name of a field filter such as pre_user_description) or allowed tags array (see above). Default: 'post'.
+	 * @param \GV\Template_Context $gravityview  The template context.
 	 */
 	$allowed_html = apply_filters( 'gravityview/fields/textarea/allowed_kses', 'post', $gravityview );
 

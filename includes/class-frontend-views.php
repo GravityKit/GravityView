@@ -1103,6 +1103,7 @@ class GravityView_frontend {
 		 * Modify entry status requirements to be included in search results.
 		 *
 		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
+		 * @param array  $args   View configuration arguments.
 		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
@@ -1248,7 +1249,8 @@ class GravityView_frontend {
 		 * Filter get entries criteria for a specific View.
 		 *
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
-		 * @param array $args View configuration args.
+		 * @param array $args       View configuration args.
+		 * @param int   $form_id    ID of the Gravity Forms form.
 		 */
 		$parameters = apply_filters( "gravityview_get_entries_{$view_id}", $parameters, $args, $form_id );
 
@@ -1497,8 +1499,9 @@ class GravityView_frontend {
 				 *
 				 * @see GravityView_Field_Time
 				 * @since 1.14
-				 * @param string $name_part Field used for sorting
-				 * @param int $form_id GF Form ID
+				 *
+				 * @param string $sort_field_id Field used for sorting.
+				 * @param int    $form_id       GF Form ID.
 				 */
 				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
@@ -1588,8 +1591,8 @@ class GravityView_frontend {
 					 *
 					 * @since 2.5.1
 					 *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
-					 * @param \GV\View The View.
+					 * @param string   $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View $view        The View.
 					 */
 					$js_dependency     = apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
 					$js_dependencies[] = $js_dependency;
@@ -1604,12 +1607,12 @@ class GravityView_frontend {
 					$css_dependency = apply_filters_deprecated( 'gravity_view_lightbox_style', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_style' );
 
 					/**
-					 * Override the lightbox script to enqueue. Default: `thickbox`.
+					 * Override the lightbox style to enqueue. Default: `thickbox`.
 					 *
 					 * @since 2.5.1
 					 *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
-					 * @param \GV\View The View.
+					 * @param string   $style_slug If you want to use a different lightbox style, return the name of it here.
+					 * @param \GV\View $view       The View.
 					 */
 					$css_dependency     = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
 					$css_dependencies[] = $css_dependency;
@@ -1639,15 +1642,20 @@ class GravityView_frontend {
 
 				static $inlined_scripts = [];
 
+				$custom_javascript = $view->settings->get( 'custom_javascript' );
+				$custom_css        = $view->settings->get( 'custom_css', null );
 
-				// Only print once.
-				if( ! isset( $inlined_scripts[ $view->ID ] ) ) {
+				// Already processed this View - skip inline scripts/styles but continue enqueuing.
+				if ( isset( $inlined_scripts[ $view->ID ] ) ) {
+					wp_enqueue_script( 'gravityview-fe-view' );
 
-					$custom_javascript = $view->settings->get( 'custom_javascript' );
-
-					if ( ! empty( $custom_javascript ) ) {
-						wp_add_inline_script( 'gravityview-fe-view', $custom_javascript, 'after' );
+					if ( ! empty( $data['atts']['sort_columns'] ) ) {
+						wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GV_PLUGIN_VERSION, 'all' );
 					}
+
+					$this->enqueue_default_style( $css_dependencies );
+					self::add_style( $template_id );
+					continue;
 				}
 
 				wp_enqueue_script( 'gravityview-fe-view' );
@@ -1660,13 +1668,17 @@ class GravityView_frontend {
 
 				self::add_style( $template_id );
 
-				// Only print once.
-				if( ! isset( $inlined_scripts[ $view->ID ] ) ) {
-					$custom_css = $view->settings->get( 'custom_css', null );
+				// Add custom JavaScript as inline script (loads in footer after main script).
+				if ( ! empty( $custom_javascript ) ) {
+					$custom_javascript = $this->replace_code_placeholders( $custom_javascript, $view );
+					wp_add_inline_script( 'gravityview-fe-view', $custom_javascript, 'after' );
+				}
 
-					if ( $custom_css ) {
-						wp_add_inline_style( 'gravityview_default_style', $custom_css );
-					}
+				// Add custom CSS as inline style (loads in header with main styles).
+				// Must be added after enqueue_default_style() registers the handle.
+				if ( ! empty( $custom_css ) ) {
+					$custom_css = $this->replace_code_placeholders( $custom_css, $view );
+					wp_add_inline_style( 'gravityview_default_style', $custom_css );
 				}
 
 				$inlined_scripts[ $view->ID ] = true;
@@ -1853,6 +1865,58 @@ class GravityView_frontend {
 
 		return apply_filters( "gravityview/sortable/formfield_{$form['id']}_{$field_id}", apply_filters( "gravityview/sortable/field_{$field_id}", true, $form ) );
 	}
+
+	/**
+	 * Replaces placeholders in custom CSS and JavaScript code with dynamic values.
+	 *
+	 * Supported placeholders:
+	 * - `GF_FORM_ID`: Replaced with the primary connected Gravity Forms form ID (not joined forms from Multiple Forms).
+	 * - `VIEW_ID`: Replaced with the View ID.
+	 * - `VIEW_SELECTOR`: Replaced with a high-specificity CSS class selector (`.gv-container.gv-container-{view_id}`).
+	 *
+	 * @since 2.50.0
+	 *
+	 * @param string   $content The custom CSS or JavaScript content containing placeholders.
+	 * @param \GV\View $view    The View object to get replacement values from.
+	 *
+	 * @return string The content with placeholders replaced with actual values.
+	 */
+	private function replace_code_placeholders( $content, $view ) {
+		if ( empty( $content ) || ! $view instanceof \GV\View ) {
+			return $content;
+		}
+
+		$form_id = $view->form ? $view->form->ID : null;
+		$view_id = $view->ID;
+
+		// Build placeholders array. Note: strtr() processes longer keys first,
+		// so VIEW_SELECTOR is replaced before VIEW_ID.
+		$placeholders = [
+			/** @see gv_container_class() */
+			'VIEW_SELECTOR' => '.gv-container.gv-container-' . $view_id,
+			'VIEW_ID'       => $view_id,
+		];
+
+		// Only include GF_FORM_ID if form exists. If null, leave placeholder as-is
+		// to avoid invalid CSS/JS like ".form- { }" when form is missing.
+		if ( null !== $form_id ) {
+			$placeholders['GF_FORM_ID'] = $form_id;
+		}
+
+		/**
+		 * Filters the placeholders available for custom CSS and JavaScript code.
+		 *
+		 * @since 2.50.0
+		 *
+		 * @param array    $placeholders Associative array of placeholder => replacement value pairs.
+		 * @param \GV\View $view         The View object.
+		 * @param string   $content      The original content before replacement.
+		 */
+		$placeholders = apply_filters( 'gk/gravityview/custom-code/placeholders', $placeholders, $view, $content );
+
+		return strtr( $content, $placeholders );
+	}
+
 }
 
 GravityView_frontend::getInstance();

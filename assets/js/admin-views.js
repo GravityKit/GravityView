@@ -57,6 +57,10 @@
 
    var viewConfiguration, viewGeneralSettings;
 
+	// Ensures gform.applyFilters exists (needed for merge tags compatibility and fix conflict with Yoast)
+	window.gform = window.gform || {};
+	window.gform.applyFilters = window.gform.applyFilters || function (a, v, ...args) { return v; };
+
    const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
 
    const EXPAND_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M2.2 7.2c.4 0 .7-.3.7-.7V6l-.2-2.1 1.6 1.7 2 2c.1.2.3.2.5.2.5 0 .8-.3.8-.8 0-.2 0-.4-.2-.5l-2-2-1.7-1.6h2.2c0 .1.5.1.5.1.4 0 .7-.3.7-.7 0-.4-.3-.7-.7-.7H2.6c-.8 0-1.2.5-1.2 1.2v3.7c0 .4.3.7.8.7zm7.4 7.5h3.8c.8 0 1.2-.4 1.2-1.2V9.8c0-.4-.3-.7-.8-.7-.4 0-.7.3-.7.7v2.6c.1 0-1.5-1.7-1.5-1.7l-2-2c-.1-.1-.3-.2-.5-.2-.5 0-.8.3-.8.8s0 .4.2.5l2 2 1.7 1.6H10c0-.1-.5-.1-.5-.1-.4 0-.7.3-.7.7 0 .4.3.7.7.7z"/></svg>';

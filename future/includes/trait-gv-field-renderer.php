@@ -34,19 +34,22 @@ trait Field_Renderer_Trait {
 		);
 
 		/**
-		 * @filter `gravityview/template/field/label` Override the field label.
-		 * @since  2.0
+		 * Override the field label.
 		 *
-		 * @param  [in,out] string $label The label to override.
+		 * @since 2.0
+		 *
+		 * @param string               $label   The label to override.
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$label = apply_filters( 'gravityview/template/field/label', $label, $context );
 
 		/**
-		 * @filter `gravityview/template/table/entry/hide_empty`
+		 * Filters whether the field should be hidden if the value is empty.
 		 *
-		 * @param boolean              $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
-		 * @param \GV\Template_Context $context    The context ;) Love it, cherish it. And don't you dare modify it!
+		 * @since 2.33
+		 *
+		 * @param bool                 $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
+		 * @param \GV\Template_Context $context    The context.
 		 */
 		$hide_empty = apply_filters(
 			'gravityview/render/hide-empty-zone',

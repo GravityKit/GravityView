@@ -26,9 +26,10 @@ if ( '1970-01-01' === $value ) {
 	/**
 	 * Whether to hide values that match the Unix Epoch date (1970-01-01) from the output.
 	 *
+	 * @since 1.7
 	 * @since 2.0 Added $gravityview parameter.
 	 *
-	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value. Default: true.
+	 * @param bool                 $hide_epoch  True: hide values that are 1970-01-01. False: show the value. Default: true.
 	 * @param \GV\Template_Context $gravityview The $gravityview context object.
 	 */
 	$hide_epoch = apply_filters( 'gravityview/fields/date/hide_epoch', true, $gravityview );

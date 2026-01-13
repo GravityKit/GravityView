@@ -26,6 +26,14 @@ $field_settings = $gravityview->field->as_configuration();
 
 $link_text = empty( $field_settings['entry_link_text'] ) ? esc_html__( 'View Details', 'gk-gravityview' ) : $field_settings['entry_link_text'];
 
+/**
+ * Modify the entry link anchor text.
+ *
+ * @since 1.0-beta
+ *
+ * @param string                   $link_text   The link anchor text after merge tag replacement.
+ * @param \GV\Template_Context     $gravityview The template context.
+ */
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
 $tag_atts = array();
@@ -55,10 +63,12 @@ $link = gravityview_get_link( $href, $output, $tag_atts );
 /**
  * Modify the link HTML (here for backward compatibility).
  *
- * @param string $link HTML output of the link
- * @param string $href URL of the link
- * @param array  $entry The GF entry array
- * @param  array $field_settings Settings for the particular GV field
+ * @since 1.2
+ *
+ * @param string $link           HTML output of the link.
+ * @param string $href           URL of the link.
+ * @param array  $entry          The GF entry array.
+ * @param array  $field_settings Settings for the particular GV field.
  */
 $output = apply_filters( 'gravityview_field_entry_link', $link, $href, $entry, $field_settings );
 

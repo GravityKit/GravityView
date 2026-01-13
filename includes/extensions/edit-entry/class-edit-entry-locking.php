@@ -175,9 +175,8 @@ class GravityView_Edit_Entry_Locking {
 
 		/**
 		 * Overrides whether to load the entry lock UI assets.
-		 * This filter runs before checking whether if the edit entry link is valid, user has the capability to edit the entry, etc.
 		 *
-		 * Filter: `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets`
+		 * This filter runs before checking whether if the edit entry link is valid, user has the capability to edit the entry, etc.
 		 *
 		 * @since 2.34.1
 		 *
@@ -357,13 +356,36 @@ class GravityView_Edit_Entry_Locking {
 				$person_editing_text = _x( 'the person who is editing the entry', 'Referring to the user who is currently editing a locked entry', 'gk-gravityview' );
 			}
 
+			// Anonymous users can't request control (requires logged-in user).
+			$show_request_control_default = get_current_user_id() > 0;
+
+			/**
+			 * Filters whether to show the Request Control button in the lock dialog.
+			 *
+			 * @since TBD
+			 *
+			 * @param bool  $show_button Whether to show the Request Control button. Default: true for logged-in users, false for anonymous.
+			 * @param array $entry       The entry being edited.
+			 */
+			$show_request_control = apply_filters( 'gk/gravityview/edit-entry/lock-dialog/show-request-control', $show_request_control_default, $entry );
+
+			$request_control_button = $show_request_control
+				? '<button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . esc_html__( 'Request Control', 'gk-gravityview' ) . '</button>'
+				: '';
+
+			// Use appropriate message based on whether Request Control is available.
+			$message_key = $show_request_control ? 'currently_locked' : 'currently_locked_no_takeover';
+
+			// Build Cancel URL: single entry page (remove edit parameter from current URL).
+			$cancel_url = remove_query_arg( 'edit' );
+
 			$message = '<div class="gform-locked-message">
                             <div class="gform-locked-avatar">' . $avatar . '</div>
-                            <p class="currently-editing" tabindex="0">' . esc_html( sprintf( $this->get_string( 'currently_locked' ), $person_editing_text ) ) . '</p>
+                            <p class="currently-editing" tabindex="0">' . esc_html( sprintf( $this->get_string( $message_key ), $person_editing_text ) ) . '</p>
                             <p>
                                 <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . esc_html__( 'Take Over', 'gk-gravityview' ) . '</a>
-                                <button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . esc_html__( 'Request Control', 'gk-gravityview' ) . '</button>
-                                <a class="button" onclick="history.back(-1); return false;">' . esc_html( $this->get_string( 'cancel' ) ) . '</a>
+                                ' . $request_control_button . '
+                                <a class="button" href="' . esc_url( $cancel_url ) . '">' . esc_html( $this->get_string( 'cancel' ) ) . '</a>
                             </p>
                             <div id="gform-lock-request-status">
                                 <!-- placeholder -->
@@ -391,9 +413,7 @@ class GravityView_Edit_Entry_Locking {
 		/**
 		 * Modifies the edit entry lock UI markup.
 		 *
-		 * @filter `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup`
-		 *
-		 * @since  2.34.1
+		 * @since 2.34.1
 		 *
 		 * @param string $html The HTML markup.
 		 */
@@ -409,23 +429,22 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	public function get_strings() {
 		$translations = [
-			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gk-gravityview' ),
-			'currently_editing' => __( '%s is currently editing this entry', 'gk-gravityview' ),
-			'taken_over'        => __( '%s has taken over and is currently editing this entry.', 'gk-gravityview' ),
-			'lock_requested'    => __( '%s has requested permission to take over control of this entry.', 'gk-gravityview' ),
-			'accept'            => __( 'Accept', 'gk-gravityview' ),
-			'cancel'            => __( 'Cancel', 'gk-gravityview' ),
-			'gained_control'    => __( 'You now have control', 'gk-gravityview' ),
-			'request_pending'   => __( 'Pending', 'gk-gravityview' ),
-			'no_response'       => __( 'No response', 'gk-gravityview' ),
-			'request_again'     => __( 'Request again', 'gk-gravityview' ),
-			'request_error'     => __( 'Error', 'gk-gravityview' ),
-			'request_rejected'  => __( 'Your request was rejected', 'gk-gravityview' ),
+			'currently_locked'             => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gk-gravityview' ),
+			'currently_locked_no_takeover' => __( 'This entry is currently being edited. Please try again later.', 'gk-gravityview' ),
+			'currently_editing'            => __( '%s is currently editing this entry', 'gk-gravityview' ),
+			'taken_over'                   => __( '%s has taken over and is currently editing this entry.', 'gk-gravityview' ),
+			'lock_requested'               => __( '%s has requested permission to take over control of this entry.', 'gk-gravityview' ),
+			'accept'                       => __( 'Accept', 'gk-gravityview' ),
+			'cancel'                       => __( 'Cancel', 'gk-gravityview' ),
+			'gained_control'               => __( 'You now have control', 'gk-gravityview' ),
+			'request_pending'              => __( 'Pending', 'gk-gravityview' ),
+			'no_response'                  => __( 'No response', 'gk-gravityview' ),
+			'request_again'                => __( 'Request again', 'gk-gravityview' ),
+			'request_error'                => __( 'Error', 'gk-gravityview' ),
+			'request_rejected'             => __( 'Your request was rejected', 'gk-gravityview' ),
 		];
 
-		$translations = array_map( 'wp_strip_all_tags', $translations );
-
-		return $translations;
+		return array_map( 'wp_strip_all_tags', $translations );
 	}
 
 	/**

@@ -27,9 +27,7 @@ foreach ( $metaboxes as $metabox ) {
 	/**
 	 * Can be used to insert additional HTML inside the div before the metabox is rendered.
 	 *
-	 * @since  2.26
-	 *
-	 * @action `gk/gravityview/metabox/content/before`
+	 * @since 2.26
 	 *
 	 * @param GravityView_Metabox_Tab $metabox Current GravityView_Metabox_Tab object.
 	 */
@@ -40,9 +38,7 @@ foreach ( $metaboxes as $metabox ) {
 	/**
 	 * Can be used to insert additional HTML inside the div after the metabox is rendered.
 	 *
-	 * @since  2.26
-	 *
-	 * @action `gk/gravityview/metabox/content/after`
+	 * @since 2.26
 	 *
 	 * @param GravityView_Metabox_Tab $metabox Current GravityView_Metabox_Tab object.
 	 */
