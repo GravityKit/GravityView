@@ -85,6 +85,14 @@ final class Search_Filter_Builder {
 	private function handle_filter( array $filter, array &$search_criteria, ?View $view = null ): void {
 		$key = $filter['key'] ?? '';
 
+		// Todo: Temporarily.
+		if ( is_numeric( $key ) ) {
+			return;
+		}
+
+		$request_key = $filter['request_key'] ?? $key;
+		$value       = $filter['value'] ?? '';
+
 		switch ( $key ) {
 			case 'search_all':
 				$this->handle_search_all( $filter, $search_criteria, $view );
@@ -94,14 +102,16 @@ final class Search_Filter_Builder {
 				$this->handle_date_range( $filter, $search_criteria, $view );
 
 				return;
+			case 'payment_date':
+				$search_criteria['field_filters'][] = $this->handle_date_filter( $filter );
+
+				return;
+			case 'is_approved':
+				return;
 		}
 
-		$request_key = $filter['request_key'] ?? $key;
-		$value       = $filter['value'] ?? '';
-		$operator    = $filter['operator'] ?? '=';
-
 		// Apply operator validation with request_key (BC) and key (new API).
-		$operator = $this->get_operator( $operator, $request_key, $key );
+		$operator = $this->get_operator( $filter['operator'] ?? '=', $request_key, $key );
 
 		$search_criteria['field_filters'][] = [
 			'key'      => 'entry_id' === $key ? 'id' : $key,
@@ -510,15 +520,17 @@ final class Search_Filter_Builder {
 	): void {
 		// Handle a single day filter: when type is 'day' and only start_date is set.
 		if (
-			( $filter['type'] ?? '' ) === 'day'
+			'day' === ( $filter['type'] ?? '' )
 			&& isset( $filter['start_date'] )
 			&& ! isset( $filter['end_date'] )
 		) {
 			$date      = $this->normalize_date( $filter['start_date'] );
 			$timestamp = strtotime( $date );
-			$date_only = gmdate( 'Y-m-d', $timestamp );
+			$date_only = date( $this->get_datepicker_format( true ), $timestamp );
 
-			$filter['end_date'] = $date_only . ' 23:59:59';
+			$filter['end_date'] = $date_only;
+
+			unset( $filter['type'] );
 		}
 
 		/**
@@ -532,7 +544,8 @@ final class Search_Filter_Builder {
 		 * @param boolean $adjust_tz Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default is `false`.
 		 * @param string  $context   Where the filter is being called from. `search` in this case.
 		 */
-		$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', false, 'search' );
+		$context   = 'search';
+		$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', false, $context );
 
 		$keys = [ 'start_date', 'end_date' ];
 		foreach ( $keys as $key ) {
@@ -553,8 +566,7 @@ final class Search_Filter_Builder {
 						|| ( 'end_date' === $key && $date_timestamp > strtotime( $stored_date ) )
 					)
 				) {
-					// Since the date is narrower, ignore this value.
-					$date = null;
+					$date = $stored_date;
 				}
 			}
 
@@ -714,5 +726,50 @@ final class Search_Filter_Builder {
 		$mode = strtolower( apply_filters( 'gravityview/search/mode', $data['mode'] ?? 'any' ) );
 
 		return in_array( $mode, [ 'any', 'all' ], true ) ? $mode : 'any';
+	}
+
+	/**
+	 * Handles a date type filter.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $filter The filter.
+	 *
+	 * @return array The updated filter.
+	 */
+	private function handle_date_filter( array $filter ): array {
+		$date_format = $this->get_datepicker_format( true );
+
+		$key         = $filter['key'] ?? '';
+		$request_key = $filter['request_key'] ?? $key;
+		$value       = $filter['value'] ?? '';
+
+		if ( is_array( $value ) ) {
+			$filter = [];
+
+			foreach ( $value as $k => $date ) {
+				if ( empty( $date ) ) {
+					continue;
+				}
+
+				$operator = 'start' === $k ? '>=' : '<=';
+
+				$filter[] = [
+					'key'      => $key,
+					'value'    => GravityView_Widget_Search::get_formatted_date( $date, 'Y-m-d', $date_format ),
+					'operator' => $this->get_operator( $operator, $request_key, $key, [ $operator ], $operator ),
+				];
+			}
+		} else {
+			$date               = $value;
+			$filter['value']    = GravityView_Widget_Search::get_formatted_date( $date, 'Y-m-d', $date_format );
+			$filter['operator'] = $this->get_operator( 'is', $request_key, $key, [ 'is' ], 'is' );
+		}
+
+		if ( 'payment_date' === $filter['key'] ) {
+			$filter['operator'] = 'contains';
+		}
+
+		return $filter;
 	}
 }

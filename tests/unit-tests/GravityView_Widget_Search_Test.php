@@ -408,7 +408,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			) ),
 		) );
 
-		$_GET = array( 'gv_by' => '1', 'gv_id' => '3' );
+		$_GET = array( 'gv_id' => '3', 'gv_by' => '1' );
 
 		$search_criteria = array(
 			'field_filters' => array(
@@ -516,7 +516,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$search_criteria_dates = array(
 			'start_date' => '2018-04-07 05:00:00',
-			'end_date' => '2018-04-08 05:00:00',
+			'end_date' => '2018-04-08 04:59:59',
 			'field_filters' => array(
 				'mode' => 'any',
 			),
@@ -819,7 +819,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 	public function get_test_approval_status_search() {
 		return array(
-			array(
+			'all statuses' => array(
 				'show_only_approved' => false,
 				'statuses'           => array(
 					'unapproved'  => 2,
@@ -834,7 +834,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					array( 'count' => 0, 'filter' => array( -1 ) ),
 				)
 			),
-			array(
+			'approved only' => array(
 				'show_only_approved' => true,
 				'statuses'           => array(
 					'unapproved'  => 2,
@@ -1123,7 +1123,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			foreach ( $search_criteria['field_filters'] as $k => $filter ) {
 				if ( ! empty( $filter['key'] ) && '16' == $filter['key'] ) {
 					$search_criteria['field_filters'][ $k ]['operator'] = 'is';
-					break;
 				}
 			}
 

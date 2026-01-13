@@ -82,7 +82,7 @@ final class Search_Filter_Builder_Test extends GV_UnitTestCase {
 	 *
 	 * @return array
 	 */
-	public function data_provider_form_test_to_search_criteria(): array {
+	public function data_provider_for_test_to_search_criteria(): array {
 		return [
 			'basic'                    => [
 				[
@@ -163,7 +163,7 @@ final class Search_Filter_Builder_Test extends GV_UnitTestCase {
 					'field_filters' => [
 						'mode' => 'any',
 					],
-					// 'start_date' => '2025-04-01', // This is missing because it is out of the bounds set by the View.
+					'start_date' => '2025-04-01 00:00:00',
 					'end_date'      => '2025-09-30 23:59:59',
 				],
 			],
@@ -177,7 +177,7 @@ final class Search_Filter_Builder_Test extends GV_UnitTestCase {
 						'mode' => 'any',
 					],
 					'start_date'    => '2025-05-01 00:00:00',
-					// 'end_date'      => '2026-09-30 23:59:59', // This is missing because it is out of the bounds set by the View.
+					'end_date'      => '2025-12-31 23:59:59',
 				],
 			],
 			'single day search'        => [
@@ -198,7 +198,7 @@ final class Search_Filter_Builder_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Filter_Builder::to_search_criteria()}.
 	 *
-	 * @dataProvider data_provider_form_test_to_search_criteria
+	 * @dataProvider data_provider_for_test_to_search_criteria
 	 *
 	 * @since        $ver$
 	 */
@@ -231,28 +231,51 @@ final class Search_Filter_Builder_Test extends GV_UnitTestCase {
 		self::assertSame( ' test ', $result['field_filters'][0]['value'] );
 	}
 
+	public function data_provider_for_test_to_search_criteria_with_date_created_adjust_timezone(): array {
+		return [
+			'single date' => [
+				[
+					'gv_start' => '2025-06-16 13:00:01',
+				],
+				[
+					'start_date' => '2025-06-16 11:00:01',
+					'end_date'   => '2025-06-16 21:59:59',
+				]
+			],
+			'single date as range' => [
+				[
+					'gv_start' => '06/16/2025',
+					'gv_end' => '06/16/2025',
+				],
+				[
+					'start_date' => '2025-06-15 22:00:00',
+					'end_date'   => '2025-06-16 21:59:59',
+				]
+			]
+		];
+	}
 	/**
 	 * Test case for {@see Search_Filter_Builder::to_search_criteria()} that adjusts the search parameters based on the
 	 * timezone.
 	 *
 	 * @since $ver$
+	 *
+	 * @dataProvider data_provider_for_test_to_search_criteria_with_date_created_adjust_timezone
 	 */
-	public function test_search_adjust_timezone(): void {
+	public function test_search_adjust_timezone(array $arguments, array $expected ): void {
 		$original_timezone = get_option( 'timezone_string' );
 		update_option( 'timezone_string', 'Europe/Amsterdam' );
 
 		add_filter( 'gravityview_date_created_adjust_timezone', '__return_true' );
 
-		$request = Search_Request::from_arguments( [
-			'gv_start' => '2025-06-16 13:00:01',
-		] );
+		$request = Search_Request::from_arguments( $arguments );
 
 		$result = Search_Filter_Builder::get_instance()->to_search_criteria( $request, $this->view );
 
 		remove_filter( 'gravityview_date_created_adjust_timezone', '__return_true' );
 		update_option( 'timezone_string', $original_timezone );
 
-		self::assertSame( '2025-06-16 11:00:01', $result['start_date'] );
-		self::assertSame( '2025-06-16 21:59:59', $result['end_date'] );
+		self::assertSame( $expected['start_date'], $result['start_date'] );
+		self::assertSame( $expected['end_date'], $result['end_date'] );
 	}
 }

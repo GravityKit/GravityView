@@ -16,6 +16,7 @@ use GV\Search\Fields\Search_Field_All;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
 use GV\Search\Fields\Search_Field_Search_Mode;
 use GV\Search\Fields\Search_Field_Submit;
+use GV\Search\Querying\Search_Filter_Builder;
 use GV\Search\Querying\Search_Request;
 use GV\Search\Search_Field_Collection;
 use GV\View;
@@ -682,22 +683,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$get = gv_map_deep( $get, 'rawurldecode' );
 		}
 
+		$search_request = Search_Request::from_arguments( $get );
+		if ( ! $search_request ) {
+			return $search_criteria;
+		}
+
+		$tmp_criteria = Search_Filter_Builder::get_instance()->to_search_criteria( $search_request, $view );
+
 		// Make sure array key is set up
 		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', [] );
+		$search_criteria                  = array_merge( $search_criteria, $tmp_criteria );
 
-		$searchable_fields        = $this->get_view_searchable_fields( $view );
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
-
-		/**
-		 * Search for each word separately or the whole phrase?
-		 *
-		 * @since  1.20.2
-		 * @since  2.19.6 Added $view parameter
-		 *
-		 * @param bool     $split_words True: split a phrase into words; False: search whole word only [Default: true]
-		 * @param \GV\View $view        The View being searched
-		 */
-		$split_words = apply_filters( 'gravityview/search-all-split-words', true, $view );
 
 		/**
 		 * Remove leading/trailing whitespaces from search value
@@ -709,132 +706,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @param \GV\View $view              The View being searched
 		 */
 		$trim_search_value = apply_filters( 'gravityview/search-trim-input', true, $view );
-
-		// add free search
-		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
-			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
-
-			$criteria = $this->get_criteria_from_query( $search_all_value, $split_words );
-
-			$form = GFAPI::get_form( $form_id );
-
-			$use_json_storage = false;
-
-			foreach ( ( $form['fields'] ?? [] ) as $field ) {
-				if ( 'json' === $field->storageType ) {
-					$use_json_storage = true;
-
-					break;
-				}
-			}
-
-			foreach ( $criteria as $criterion ) {
-				$params = array_merge(
-					[ 'key' => null ],
-					$criterion
-				);
-
-				$search_criteria['field_filters'][] = $params;
-
-				// Certain form field meta values are stored as JSON, so we need to encode them before searching.
-				// This replicates the behavior of GF_Query_JSON_Literal::sql().
-				$original_value = $params['value'] ?? '';
-
-				if ( $use_json_storage && $original_value && is_string( $original_value ) ) {
-					$value = trim( json_encode( $original_value ), '"' );
-					$value = str_replace( '\\', '\\\\', $value );
-
-					if ( $value !== $original_value ) {
-						$params['value']                    = $value;
-						$search_criteria['field_filters'][] = $params;
-					}
-				}
-			}
-		}
-
-		// start date & end date
-		if ( in_array( 'entry_date', $searchable_fields ) ) {
-			/**
-			 * Get and normalize the dates according to the input format.
-			 */
-			$curr_start = $this->normalize_date( $get['gv_start'] ?? '' );
-			$curr_end   = $this->normalize_date( $get['gv_end'] ?? '' );
-
-			if ( $view ) {
-				/**
-				 * Override start and end dates if View is limited to some already.
-				 */
-				$start_date      = $view->settings->get( 'start_date' );
-				$start_timestamp = strtotime( $curr_start );
-
-				if ( $start_date && $start_timestamp ) {
-					$curr_start = $start_timestamp < strtotime( $start_date ) ? $start_date : $curr_start;
-				}
-
-				$end_date      = $view->settings->get( 'end_date' );
-				$end_timestamp = strtotime( $curr_end );
-
-				if ( $end_date && $end_timestamp ) {
-					$curr_end = $end_timestamp > strtotime( $end_date ) ? $end_date : $curr_end;
-				}
-			}
-
-			/**
-			 * Whether to adjust the timezone for entries. \n.
-			 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
-			 * This is for backward compatibility before \GF_Query started to automatically apply the timezone offset.
-			 *
-			 * @since 1.12
-			 *
-			 * @param boolean $adjust_tz Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default is `false`.
-			 * @param string  $context   Where the filter is being called from. `search` in this case.
-			 */
-			$adjust_tz = apply_filters( 'gravityview_date_created_adjust_timezone', false, 'search' );
-
-			/**
-			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
-			 */
-			if ( ! empty( $curr_start ) ) {
-				$curr_start                    = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
-				$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
-			}
-
-			if ( ! empty( $curr_end ) ) {
-				// Fast-forward 24 hour on the end time
-				$curr_end                    = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
-				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
-				if ( strpos( $search_criteria['end_date'], '00:00:00' ) ) { // See https://github.com/gravityview/GravityView/issues/1056
-					$search_criteria['end_date'] = date( 'Y-m-d H:i:s', strtotime( $search_criteria['end_date'] ) - 1 );
-				}
-			} elseif ( ! empty( $curr_start ) && ! array_key_exists( 'gv_end', $get ) ) {
-				// If only gv_start is provided (no gv_end parameter at all), it's a single date search.
-				// Set end_date to end of the same day to return entries from only that specific date.
-				$curr_end                    = date( 'Y-m-d H:i:s', strtotime( $curr_start ) + DAY_IN_SECONDS );
-				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
-
-				if ( strpos( $search_criteria['end_date'], '00:00:00' ) ) {
-					$search_criteria['end_date'] = date( 'Y-m-d H:i:s', strtotime( $search_criteria['end_date'] ) - 1 );
-				}
-			}
-		}
-
-		// search for a specific entry ID
-		if ( ! empty( $get['gv_id'] ) && in_array( 'entry_id', $searchable_fields ) ) {
-			$search_criteria['field_filters'][] = [
-				'key'      => 'id',
-				'value'    => absint( $get['gv_id'] ),
-				'operator' => $this->get_operator( $get, 'gv_id', [ '=' ], '=' ),
-			];
-		}
-
-		// search for a specific Created_by ID
-		if ( ! empty( $get['gv_by'] ) && in_array( 'created_by', $searchable_fields ) ) {
-			$search_criteria['field_filters'][] = [
-				'key'      => 'created_by',
-				'value'    => $get['gv_by'],
-				'operator' => $this->get_operator( $get, 'gv_by', [ '=' ], '=' ),
-			];
-		}
 
 		// Get search mode passed in URL
 		$mode = isset( $get['mode'] ) && in_array( $get['mode'], [ 'any', 'all' ] ) ? $get['mode'] : 'any';
