@@ -348,7 +348,8 @@ final class Search_Request_Test extends GV_UnitTestCase {
 						[
 							'key'        => 'entry_date',
 							'start_date' => '2025-01-01',
-							'end_date'   => '2025-01-02 00:00:00',
+							'end_date'   => null,
+							'type'       => 'day',
 						],
 					],
 				],
@@ -361,7 +362,8 @@ final class Search_Request_Test extends GV_UnitTestCase {
 						[
 							'key'        => 'entry_date',
 							'start_date' => '2025-01-01 15:00:50',
-							'end_date'   => '2025-01-02 15:00:50',
+							'end_date'   => null,
+							'type'       => 'day',
 						],
 					],
 				],
@@ -396,5 +398,35 @@ final class Search_Request_Test extends GV_UnitTestCase {
 		$search_request = Search_Request::from_arguments( $arguments );
 
 		self::assertSame( $expected, $search_request->to_array() );
+	}
+
+	/**
+	 * Test case for {@see Search_Request::from_request()} with url decoding.
+	 *
+	 * This tests both a $_GET and a $_POST request.
+	 *
+	 * @since $ver$
+	 * @testWith [false]
+	 *        [true]
+	 */
+	public function test_request_url_decode( bool $as_post ): void {
+		if ( $as_post ) {
+			$_POST['gv_search'] = 'test%20query+1';
+		} else {
+			$_GET['gv_search'] = 'test%20query+1';
+		}
+
+		$cb = static fn() => $as_post ? 'post' : 'get';
+		add_filter( 'gravityview/search/method', $cb );
+
+		$request        = new Frontend_Request();
+		$search_request = Search_Request::from_request( $request );
+		self::assertInstanceOf( Search_Request::class, $search_request );
+
+		$result = $search_request->to_array();
+		self::assertSame( 'test query+1', $result['filters'][0]['value'] );
+
+		remove_filter( 'gravityview/search/method', $cb );
+		unset( $_GET['gv_search'], $_POST['gv_search'] );
 	}
 }

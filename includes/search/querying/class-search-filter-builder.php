@@ -2,7 +2,10 @@
 
 namespace GV\Search\Querying;
 
+use GravityView_Search_WP_Widget;
+use GravityView_Widget_Search;
 use GV\View;
+use JsonException;
 
 /**
  * Converts a {@see Search_Request} into various filter options.
@@ -75,8 +78,9 @@ final class Search_Filter_Builder {
 	 *
 	 * @since $ver$
 	 *
-	 * @param array $filter          The filter data.
-	 * @param array $search_criteria The search criteria to add to.
+	 * @param array     $filter          The filter data.
+	 * @param array     $search_criteria The search criteria to add to.
+	 * @param View|null $view            The View.
 	 */
 	private function handle_filter( array $filter, array &$search_criteria, ?View $view = null ): void {
 		$key = $filter['key'] ?? '';
@@ -107,18 +111,140 @@ final class Search_Filter_Builder {
 	}
 
 	/**
-	 * Todo: implememnt.
+	 * Returns the fields (or its keys) that are searchable for the provided View.
 	 *
-	 * @param View $view
+	 * @since $ver$
 	 *
-	 * @return string[]
+	 * @param View|null $view            The View.
+	 * @param bool      $with_full_field Whether to return the entire field.
+	 *
+	 * @return string[]|array[]
 	 */
-	private function get_searchable_fields( ?View $view = null ): array {
+	private function get_searchable_fields( ?View $view = null, bool $with_full_field = false ): array {
 		if ( ! $view ) {
 			return [];
 		}
 
-		return [ 'search_all', 'entry_id', 'created_by', 'entry_date' ];
+		$searchable_fields = array_merge(
+			$this->get_searchable_fields_from_sidebar_widgets( $view ),
+			$this->get_searchable_fields_from_gravityview_widgets( $view ),
+		);
+
+		if ( ! $with_full_field ) {
+			$searchable_fields = array_column( $searchable_fields, 'field' );
+			$searchable_fields = array_values( array_unique( $searchable_fields ) );
+		}
+
+		/**
+		 * @since     2.5.1
+		 * @depecated 2.14
+		 */
+		$searchable_fields = apply_filters_deprecated(
+			'gravityview/search/searchable_fields/whitelist',
+			[ $searchable_fields, $view, $with_full_field ],
+			'2.14',
+			'gravityview/search/searchable_fields/allowlist'
+		);
+
+		/**
+		 * Modifies the fields able to be searched using the Search Bar
+		 *
+		 * @since  2.14
+		 *
+		 * @param array    $searchable_fields Array of GravityView-formatted fields or only the field ID? Example: [ '1.2', 'created_by' ]
+		 * @param \GV\View $view              Object of View being searched.
+		 * @param bool     $with_full_field   Does $searchable_fields contain the full field array or just field ID? Default: false (just field ID)
+		 */
+		$searchable_fields = apply_filters(
+			'gravityview/search/searchable_fields/allowlist',
+			$searchable_fields,
+			$view,
+			$with_full_field
+		);
+
+		return $searchable_fields;
+	}
+
+	/**
+	 * Return searchable fields from {@see GravityView_Search_WP_Widget} instances.
+	 *
+	 * @since $ver$
+	 *
+	 * @param View $view The View.
+	 *
+	 * @return array The search fields.
+	 */
+	private function get_searchable_fields_from_sidebar_widgets( View $view ): array {
+		$widgets = (array) get_option( 'widget_gravityview_search', [] );
+
+		$searchable_fields = [];
+		if ( ! $searchable_fields ) {
+			return $searchable_fields;
+		}
+
+		foreach ( $widgets as $widget ) {
+			if (
+				empty( $widget['view_id'] )
+				|| ( (int) $widget['view_id'] !== (int) $view->ID )
+			) {
+				continue;
+			}
+
+			$fields = $widget['search_fields'] ?? null;
+			if ( ! $fields ) {
+				continue;
+			}
+
+			if ( is_string( $fields ) ) {
+				try {
+					$fields = json_decode( $fields, true, 512, JSON_THROW_ON_ERROR );
+				} catch ( JsonException $e ) {
+					$fields = [];
+				}
+			}
+
+			if ( ! is_array( $fields ) ) {
+				continue;
+			}
+
+			foreach ( $fields as $field ) {
+				if ( empty( $field['form_id'] ) ) {
+					$field['form_id'] = $view->form ? $view->form->ID : 0;
+				}
+				$searchable_fields[] = $field;
+			}
+		}
+
+		return $searchable_fields;
+	}
+
+	/**
+	 * Return searchable fields from {@see GravityView_Widget_Search} instances.
+	 *
+	 * @since $ver$
+	 *
+	 * @param View $view The View.
+	 *
+	 * @return array The search fields.
+	 */
+	private function get_searchable_fields_from_gravityview_widgets( View $view ): array {
+		$search_widget     = new GravityView_Widget_Search();
+		$searchable_fields = [];
+
+		foreach ( $view->widgets->by_id( $search_widget->get_widget_id() )->all() as $widget ) {
+			if ( ! $widget instanceof GravityView_Widget_Search ) {
+				continue;
+			}
+
+			foreach ( $widget->get_search_fields( $view ) as $field ) {
+				if ( empty( $field['form_id'] ) ) {
+					$field['form_id'] = $view->form ? $view->form->ID : 0;
+				}
+				$searchable_fields[] = $field;
+			}
+		}
+
+		return $searchable_fields;
 	}
 
 	/**
@@ -171,7 +297,7 @@ final class Search_Filter_Builder {
 
 		// If one of the fields has a JSON storage, we add another criteria where the search value is escaped.
 		if ( $has_json_storage ) {
-			foreach ( $words as $params ) {
+			foreach ( $words as $i => $params ) {
 				$original_value = $params['value'] ?? null;
 
 				if ( ! is_string( $original_value ) ) {
@@ -182,12 +308,22 @@ final class Search_Filter_Builder {
 				$value = trim( wp_json_encode( $original_value ), '"' );
 				$value = str_replace( '\\', '\\\\', $value );
 				if ( $value !== $original_value ) {
-					// Todo: I'm pretty sure we need to disable `required` here, as both can't be true.
+					// We need to disable `required` on both the original and the copy, as both can't be true.
+					unset( $words[ $i ]['required'], $params['required'] );
+
 					$params['value'] = $value;
 					$words[]         = $params;
 				}
 			}
 		}
+
+		// Include an empty key, for "all-fields search".
+		array_walk(
+			$words,
+			static function ( &$word ) {
+				$word['key'] = null;
+			}
+		);
 
 		// Filter out empty words.
 		return array_filter( $words, static fn( array $word ) => ! empty( $word['value'] ?? '' ) );
@@ -315,11 +451,11 @@ final class Search_Filter_Builder {
 	 *
 	 * @since $ver$
 	 *
-	 * @param View $view The View.
+	 * @param View|null $view The View.
 	 *
 	 * @return bool
 	 */
-	private function is_whitespace_stripped( View $view ): bool {
+	private function is_whitespace_stripped( ?View $view ): bool {
 		/**
 		 * Whether to remove leading/trailing whitespaces from search value.
 		 *
@@ -339,11 +475,15 @@ final class Search_Filter_Builder {
 	 *
 	 * @since $ver$
 	 *
-	 * @param array $filter          The filter object.
-	 * @param array $search_criteria The array to append the criteria to.
+	 * @param array     $filter          The filter object.
+	 * @param array     $search_criteria The array to append the criteria to.
+	 * @param View|null $view            The View.
 	 */
 	private function handle_search_all( array $filter, array &$search_criteria, ?View $view = null ): void {
 		$value = $filter['value'] ?? '';
+		if ( $this->is_whitespace_stripped( $view ) ) {
+			$value = trim( $value );
+		}
 
 		$should_split_words = $this->should_split_words( $view );
 		$has_json_storage   = $this->has_json_storage( $view );
@@ -368,9 +508,23 @@ final class Search_Filter_Builder {
 		array &$search_criteria,
 		?View $view = null
 	): void {
+		// Handle a single day filter: when type is 'day' and only start_date is set.
+		if (
+			( $filter['type'] ?? '' ) === 'day'
+			&& isset( $filter['start_date'] )
+			&& ! isset( $filter['end_date'] )
+		) {
+			$date      = $this->normalize_date( $filter['start_date'] );
+			$timestamp = strtotime( $date );
+			$date_only = gmdate( 'Y-m-d', $timestamp );
+
+			$filter['end_date'] = $date_only . ' 23:59:59';
+		}
+
 		/**
-		 * Whether to adjust the timezone for entries. \n.
-		 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
+		 * Whether to adjust the timezone for entries.
+		 *
+		 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php).
 		 * This is for backward compatibility before \GF_Query started to automatically apply the timezone offset.
 		 *
 		 * @since 1.12
@@ -405,13 +559,13 @@ final class Search_Filter_Builder {
 			}
 
 			if ( ! empty( $date ) ) {
-				if ( $adjust_tz ) {
-					$date = get_gmt_from_date( $date );
+				// Only append time if the original date doesn't already have one.
+				if ( ! str_contains( $date, ':' ) ) {
+					$date .= ' ' . ( 'start_date' === $key ? '00:00:00' : '23:59:59' );
 				}
 
-				// See https://github.com/gravityview/GravityView/issues/1056.
-				if ( 'end_date' === $key && strpos( $date, '00:00:00' ) ) {
-					$date = date( 'Y-m-d H:i:s', strtotime( $date ) - 1 );
+				if ( $adjust_tz ) {
+					$date = get_gmt_from_date( $date );
 				}
 
 				$search_criteria[ $key ] = $date;
@@ -433,9 +587,18 @@ final class Search_Filter_Builder {
 			return '';
 		}
 
-		$date = date_create_from_format( $this->get_datepicker_format( true ), $date_string );
+		// Date string is already in the proper format.
+		$date = date_create_from_format( 'Y-m-d H:i:s', $date_string );
+		if ( $date ) {
+			return $date_string;
+		}
 
-		return $date ? $date->format( 'Y-m-d' ) : '';
+		$date = date_create_from_format( $this->get_datepicker_format( true ), $date_string );
+		if ( $date ) {
+			return $date->format( 'Y-m-d' );
+		}
+
+		return '';
 	}
 
 	/**

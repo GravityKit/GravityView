@@ -2267,9 +2267,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @param View $view The View.
 	 *
+	 * @internal Do not depend on this method.
+	 *
 	 * @return array{field: string, label:string, input_type:string}[] The searchable fields in the legacy format.
 	 */
-	private function get_search_fields( View $view ): array {
+	final public function get_search_fields( View $view ): array {
 		$search_fields = [];
 		$collection    = $this->get_search_field_collection( $this->configuration->all(), $view );
 

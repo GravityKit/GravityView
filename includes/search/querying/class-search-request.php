@@ -296,10 +296,8 @@ final class Search_Request {
 				&& empty( $date_filter['end_date'] )
 				&& ! isset( $this->arguments['gv_end'] )
 			) {
-				// Set end_date to the end of the same day to return entries from only *that* specific date.
-				$curr_end = date( 'Y-m-d H:i:s', strtotime( $date_filter['start_date'] ) + DAY_IN_SECONDS );
-
-				$date_filter['end_date'] = $curr_end;
+				// Single day search.
+				$date_filter['type'] = 'day';
 			}
 
 			$filters[] = $date_filter;
