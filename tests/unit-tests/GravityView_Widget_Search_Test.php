@@ -2186,6 +2186,10 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 * @since $ver$
 	 */
 	public function test_searching_repeater_fields(): void {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
 		$form = $this->factory->form->import_and_get( 'repeater-nested.json' );
 
 		$view = $this->factory->view->create_and_get( [

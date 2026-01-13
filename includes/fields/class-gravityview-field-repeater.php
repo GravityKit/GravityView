@@ -151,6 +151,8 @@ class GravityView_Field_Repeater extends GravityView_Field {
 			return;
 		}
 
+		static::$is_initialized = true;
+
 		add_filter( 'gravityview/template/field/class', [ $this, 'maybe_replace_renderer_class' ], 10, 2 );
 		add_filter( 'gform_entry_field_value', [ $this, 'remove_gform_styling' ], 10, 2 );
 		add_filter( 'gravityview/field/repeater/value', [ $this, 'limit_results' ], 10, 2 );

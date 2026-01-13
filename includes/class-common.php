@@ -527,8 +527,7 @@ class GVCommon {
 						// Only set the parent if not already set (preserves direct parent for nested repeaters).
 						$sub_field['parent']    = $sub_field['parent'] ?? $field;
 						$sub_field['sub_type']  = 'field';
-						$combined_id            = sprintf( '%d.%s', $field['id'], $id );
-						$fields[ $id ] = $sub_field;
+						$fields[ (string) $id ] = $sub_field;
 					}
 				}
 

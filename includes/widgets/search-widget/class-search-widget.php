@@ -1412,7 +1412,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$result[] = $this->get_nested_fields( $sub_field );
 		}
 
-		return array_merge( ...$result );
+		return array_merge( [], ...$result );
 	}
 	/**
 	 * Convert $_GET/$_POST key to the field/meta ID

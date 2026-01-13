@@ -601,7 +601,6 @@ class View_Table_Template extends View_Template {
 
 		$form_id = (int) ( $entry['form_id'] ?? 0 );
 
-		// Todo: This needs to be a more generic function somewhere else called: "get_ancestor_mapping()".
 		$ancestor_mapping = GravityView_Field_Repeater::get_repeater_field_ids( $form_id );
 		$active_ancestors = $this->get_active_ancestors( $ancestor_mapping, $fields );
 
@@ -665,12 +664,12 @@ class View_Table_Template extends View_Template {
 			$flat_rows,
 		);
 
-		$flat_rows[0] = $base_cells + $flat_rows[0];
-
 		// If no rows were generated, return the default.
 		if ( ! $flat_rows ) {
 			return $default_row;
 		}
+
+		$flat_rows[0] = $base_cells + $flat_rows[0];
 
 		// Step 6: Convert flat rows to row objects with Field_Collection and Entry.
 		$rows = [];

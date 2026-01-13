@@ -155,7 +155,7 @@ class Entry_Table_Template extends Entry_Template {
 
 			foreach ( $results as $i => $value ) {
 				if ( $i > 0 ) {
-					$markup = '<tr id="{{ field_id }}-{{ row }} " class="{{ class }}" data-row="{{ row }}"><td>{{ value }}</td></tr>';
+					$markup = '<tr id="{{ field_id }}-{{ row }}" class="{{ class }}" data-row="{{ row }}"><td>{{ value }}</td></tr>';
 				}
 				$markup = apply_filters( 'gravityview/template/table/entry/markup', $markup, $field );
 
