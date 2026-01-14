@@ -67,7 +67,7 @@ if ( empty( $content ) ) {
 }
 
 /**
- * Allow plugins to modify merge tag replacement behavior for custom content.
+ * Allows plugins to modify merge tag replacement behavior for custom content.
  *
  * This filter provides a way for plugins (like GravityMath) to protect shortcode content
  * from having merge tags replaced before the shortcode is processed.
