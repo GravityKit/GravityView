@@ -52,8 +52,8 @@ class GravityView_Image_Resizer {
 	 * @since TODO
 	 */
 	public function __construct() {
-		add_filter( 'gravityview/fields/fileupload/image_atts', array( $this, 'filter_image_atts' ), 20, 5 );
-		add_action( 'gform_delete_entry', array( $this, 'cleanup_entry_thumbnails' ), 10, 1 );
+		add_filter( 'gravityview/fields/fileupload/image_atts', [ $this, 'filter_image_atts' ], 20, 5 );
+		add_action( 'gform_delete_entry', [ $this, 'cleanup_entry_thumbnails' ], 10, 1 );
 	}
 
 	/**
@@ -69,7 +69,7 @@ class GravityView_Image_Resizer {
 	 *
 	 * @return array
 	 */
-	public function filter_image_atts( $image_atts = array(), $field_compat = null, $context = null, $file_info = null, $index = null ) {
+	public function filter_image_atts( $image_atts = [], $field_compat = null, $context = null, $file_info = null, $index = null ) {
 		if ( ! $context instanceof Template_Context ) {
 			return $image_atts;
 		}
@@ -77,7 +77,17 @@ class GravityView_Image_Resizer {
 		$field_settings = $context->field->as_configuration();
 		$entry          = $context->entry->as_entry();
 
-		$enabled = apply_filters( 'gravityview/image-resize/enabled', true, $context, $field_settings, $entry );
+		/**
+		 * Filters whether image resizing is enabled.
+		 *
+		 * @since TODO
+		 *
+		 * @param bool             $enabled        Whether resizing is enabled.
+		 * @param Template_Context $context        Template context.
+		 * @param array            $field_settings Field settings.
+		 * @param array            $entry          Entry data.
+		 */
+		$enabled = apply_filters( 'gk/gravityview/image-resize/enabled', true, $context, $field_settings, $entry );
 		if ( ! $enabled ) {
 			return $image_atts;
 		}
@@ -87,7 +97,17 @@ class GravityView_Image_Resizer {
 			return $image_atts;
 		}
 
-		$should_resize = apply_filters( 'gravityview/image-resize/should-resize', true, $entry, $field_settings, $context );
+		/**
+		 * Filters whether the current image should be resized.
+		 *
+		 * @since TODO
+		 *
+		 * @param bool             $should_resize  Whether to resize the current image.
+		 * @param array            $entry          Entry data.
+		 * @param array            $field_settings Field settings.
+		 * @param Template_Context $context        Template context.
+		 */
+		$should_resize = apply_filters( 'gk/gravityview/image-resize/should-resize', true, $entry, $field_settings, $context );
 		if ( ! $should_resize ) {
 			return $image_atts;
 		}
@@ -101,7 +121,17 @@ class GravityView_Image_Resizer {
 		$form_id  = (int) rgar( $entry, 'form_id' );
 
 		$bypass_secure = ! empty( $field_settings['bypass_secure_download'] );
-		$bypass_secure = apply_filters( 'gravityview/image-resize/bypass-secure', $bypass_secure, $entry, $field_settings, $context );
+		/**
+		 * Filters whether secure file URLs may be bypassed for resizing.
+		 *
+		 * @since TODO
+		 *
+		 * @param bool             $bypass_secure  Whether secure URLs should be bypassed.
+		 * @param array            $entry          Entry data.
+		 * @param array            $field_settings Field settings.
+		 * @param Template_Context $context        Template context.
+		 */
+		$bypass_secure = apply_filters( 'gk/gravityview/image-resize/bypass-secure', $bypass_secure, $entry, $field_settings, $context );
 
 		if ( is_array( $file_info ) && ! empty( $file_info['is_secure'] ) && ! $bypass_secure ) {
 			return $image_atts;
@@ -177,15 +207,15 @@ class GravityView_Image_Resizer {
 
 		if ( is_wp_error( $resized ) || empty( $resized['url'] ) ) {
 			if ( is_wp_error( $resized ) ) {
-				gravityview()->log->error( 'Image resize failed: {message}', array( 'message' => $resized->get_error_message() ) );
-				$this->set_failure( $entry_id, $field_id, $file_key, $width, $source_sig, $resized->get_error_message() );
+				gravityview()->log->error( 'Image resize failed: {message}', [ 'message' => $resized->get_error_message() ] );
+				$this->set_failure( $entry_id, $field_id, $file_key, $target_width, $source_sig, $resized->get_error_message() );
 			} else {
-				$this->set_failure( $entry_id, $field_id, $file_key, $width, $source_sig, 'Image resize failed.' );
+				$this->set_failure( $entry_id, $field_id, $file_key, $target_width, $source_sig, 'Image resize failed.' );
 			}
 			return $image_atts;
 		}
 
-		gravityview()->log->debug( 'Image resize created', array( 'entry_id' => $entry_id, 'field_id' => $field_id, 'width' => $width ) );
+		gravityview()->log->debug( 'Image resize created', [ 'entry_id' => $entry_id, 'field_id' => $field_id, 'width' => $target_width ] );
 
 		$this->update_meta_for_size(
 			$entry_id,
@@ -194,13 +224,13 @@ class GravityView_Image_Resizer {
 			$size_key,
 			$source_url,
 			$source_sig,
-			array(
+			[
 				'url'     => $resized['url'],
 				'path'    => $resized['path'],
 				'width'   => $resized['width'],
 				'height'  => $resized['height'],
 				'created' => time(),
-			)
+			]
 		);
 
 		$image_atts['src'] = $resized['url'];
@@ -382,11 +412,11 @@ class GravityView_Image_Resizer {
 			return null;
 		}
 
-		return array(
+		return [
 			'width'  => (int) $info[0],
 			'height' => (int) $info[1],
 			'mime'   => isset( $info['mime'] ) ? $info['mime'] : '',
-		);
+		];
 	}
 
 	/**
@@ -402,9 +432,19 @@ class GravityView_Image_Resizer {
 	 * @return bool
 	 */
 	private function is_allowed_mime( $mime, $entry, $field_settings, $context ) {
+		/**
+		 * Filters the MIME types allowed for resizing.
+		 *
+		 * @since TODO
+		 *
+		 * @param array            $allowed        Allowed MIME types.
+		 * @param array            $entry          Entry data.
+		 * @param array            $field_settings Field settings.
+		 * @param Template_Context $context        Template context.
+		 */
 		$allowed = apply_filters(
-			'gravityview/image-resize/mime-allowlist',
-			array( 'image/jpeg', 'image/png', 'image/gif', 'image/webp' ),
+			'gk/gravityview/image-resize/mime-allowlist',
+			[ 'image/jpeg', 'image/png', 'image/gif', 'image/webp' ],
 			$entry,
 			$field_settings,
 			$context
@@ -427,7 +467,17 @@ class GravityView_Image_Resizer {
 	 * @return bool
 	 */
 	private function is_resize_safe( $width, $height, $entry, $field_settings, $context ) {
-		$max_dimension = (int) apply_filters( 'gravityview/image-resize/max-dimension', 5000, $entry, $field_settings, $context );
+		/**
+		 * Filters the maximum allowed image dimension for resizing.
+		 *
+		 * @since TODO
+		 *
+		 * @param int              $max_dimension  Maximum allowed dimension (px).
+		 * @param array            $entry          Entry data.
+		 * @param array            $field_settings Field settings.
+		 * @param Template_Context $context        Template context.
+		 */
+		$max_dimension = (int) apply_filters( 'gk/gravityview/image-resize/max-dimension', 5000, $entry, $field_settings, $context );
 		if ( $width > $max_dimension || $height > $max_dimension ) {
 			return false;
 		}
@@ -437,7 +487,17 @@ class GravityView_Image_Resizer {
 			return true;
 		}
 
-		$threshold = (float) apply_filters( 'gravityview/image-resize/memory-threshold', 0.75, $entry, $field_settings, $context );
+		/**
+		 * Filters the memory threshold used when estimating resize safety.
+		 *
+		 * @since TODO
+		 *
+		 * @param float            $threshold      Fraction of memory_limit to allow.
+		 * @param array            $entry          Entry data.
+		 * @param array            $field_settings Field settings.
+		 * @param Template_Context $context        Template context.
+		 */
+		$threshold = (float) apply_filters( 'gk/gravityview/image-resize/memory-threshold', 0.75, $entry, $field_settings, $context );
 		$threshold = max( 0.1, min( 1, $threshold ) );
 
 		$estimated = $width * $height * 4 * 1.5;
@@ -594,17 +654,17 @@ class GravityView_Image_Resizer {
 	private function update_meta_for_size( $entry_id, $field_id, $file_key, $size_key, $source_url, $source_sig, $size_data ) {
 		$meta = gform_get_meta( $entry_id, self::META_KEY );
 		if ( empty( $meta ) || ! is_array( $meta ) ) {
-			$meta = array();
+			$meta = [];
 		}
 
 		$field_key = 'field_' . $field_id;
 
 		if ( empty( $meta[ $field_key ]['files'][ $file_key ] ) || $meta[ $field_key ]['files'][ $file_key ]['source_sig'] !== $source_sig ) {
-			$meta[ $field_key ]['files'][ $file_key ] = array(
+			$meta[ $field_key ]['files'][ $file_key ] = [
 				'source_url' => $source_url,
 				'source_sig' => $source_sig,
-				'sizes'      => array(),
-			);
+				'sizes'      => [],
+			];
 		}
 
 		$meta[ $field_key ]['files'][ $file_key ]['sizes'][ $size_key ] = $size_data;
@@ -651,12 +711,12 @@ class GravityView_Image_Resizer {
 		if ( is_file( $dest_path ) ) {
 			$size = $this->get_image_stats( $dest_path );
 
-			return array(
+			return [
 				'url'    => $dest_url,
 				'path'   => $dest_path,
 				'width'  => isset( $size['width'] ) ? $size['width'] : $width,
 				'height' => isset( $size['height'] ) ? $size['height'] : null,
-			);
+			];
 		}
 
 		if ( function_exists( 'wp_raise_memory_limit' ) ) {
@@ -668,7 +728,16 @@ class GravityView_Image_Resizer {
 			return $editor;
 		}
 
-		$quality = (int) apply_filters( 'gravityview/image-resize/quality', 82, $entry, $field_id );
+		/**
+		 * Filters the image quality used when saving resized files.
+		 *
+		 * @since TODO
+		 *
+		 * @param int   $quality  JPEG/WebP quality (0-100).
+		 * @param array $entry    Entry data.
+		 * @param int   $field_id Field ID.
+		 */
+		$quality = (int) apply_filters( 'gk/gravityview/image-resize/quality', self::DEFAULT_QUALITY, $entry, $field_id );
 		if ( $quality > 0 && method_exists( $editor, 'set_quality' ) ) {
 			$editor->set_quality( $quality );
 		}
@@ -685,12 +754,12 @@ class GravityView_Image_Resizer {
 
 		$size = $editor->get_size();
 
-		return array(
+		return [
 			'url'    => $dest_url,
 			'path'   => $dest_path,
 			'width'  => isset( $size['width'] ) ? $size['width'] : $width,
 			'height' => isset( $size['height'] ) ? $size['height'] : null,
-		);
+		];
 	}
 
 	/**
@@ -708,13 +777,32 @@ class GravityView_Image_Resizer {
 		$default_dir = trailingslashit( $upload_dir['basedir'] ) . 'gravityview/thumbnails';
 		$default_url = trailingslashit( $upload_dir['baseurl'] ) . 'gravityview/thumbnails';
 
-		$dir = apply_filters( 'gravityview/image-resize/storage_dir', $default_dir, $entry, $field_id );
-		$url = apply_filters( 'gravityview/image-resize/storage_url', $default_url, $entry, $field_id );
+		/**
+		 * Filters the base directory used for storing resized images.
+		 *
+		 * @since TODO
+		 *
+		 * @param string $dir      Storage base directory.
+		 * @param array  $entry    Entry data.
+		 * @param int    $field_id Field ID.
+		 */
+		$dir = apply_filters( 'gk/gravityview/image-resize/storage-dir', $default_dir, $entry, $field_id );
 
-		return array(
+		/**
+		 * Filters the base URL used for resized images.
+		 *
+		 * @since TODO
+		 *
+		 * @param string $url      Storage base URL.
+		 * @param array  $entry    Entry data.
+		 * @param int    $field_id Field ID.
+		 */
+		$url = apply_filters( 'gk/gravityview/image-resize/storage-url', $default_url, $entry, $field_id );
+
+		return [
 			'dir' => untrailingslashit( $dir ),
 			'url' => untrailingslashit( $url ),
-		);
+		];
 	}
 
 	/**
@@ -751,10 +839,10 @@ class GravityView_Image_Resizer {
 	private function set_failure( $entry_id, $field_id, $file_key, $width, $source_sig, $message ) {
 		set_transient(
 			$this->get_failure_key( $entry_id, $field_id, $file_key, $width, $source_sig ),
-			array(
+			[
 				'message' => $message,
 				'time'    => time(),
-			),
+			],
 			self::FAIL_TTL
 		);
 	}
@@ -888,7 +976,7 @@ class GravityView_Image_Resizer {
 			return;
 		}
 
-		$entry = array();
+		$entry = [];
 		if ( class_exists( 'GFAPI' ) ) {
 			$maybe_entry = GFAPI::get_entry( $entry_id );
 			if ( ! is_wp_error( $maybe_entry ) ) {
