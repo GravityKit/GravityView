@@ -177,6 +177,7 @@ final class Plugin {
 		}
 
 		include_once $this->dir( 'includes/class-gravityview-image.php' );
+		include_once $this->dir( 'includes/class-gravityview-image-resizer.php' );
 		include_once $this->dir( 'includes/class-template.php' );
 		include_once $this->dir( 'includes/class-api.php' );
 		include_once $this->dir( 'includes/class-frontend-views.php' );

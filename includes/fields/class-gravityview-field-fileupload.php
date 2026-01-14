@@ -376,12 +376,17 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 * Modify the default image attributes for uploaded images.
 				 *
 				 * @since 2.0
+				 * @since TODO Added Template_Context, file info, and index parameters.
 				 *
 				 * @see GravityView_Image For the available attributes.
 				 *
-				 * @param array $image_atts Array of image attributes including `src`, `class`, `alt`, and `width`.
+				 * @param array            $image_atts   Array of image attributes including `src`, `class`, `alt`, and `width`.
+				 * @param array            $field_compat Current GravityView field array.
+				 * @param Template_Context $context      The context.
+				 * @param array            $file_info    File info for the current file.
+				 * @param int              $index        The index of the current file in the array of files.
 				 */
-				$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
+				$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts, $field_compat, $context, $file_info, $index );
 
 				$image = new GravityView_Image( $image_atts );
 
