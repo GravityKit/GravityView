@@ -66,8 +66,26 @@ if ( empty( $content ) ) {
 	return;
 }
 
+/**
+ * Allow plugins to modify merge tag replacement behavior for custom content.
+ *
+ * This filter provides a way for plugins (like GravityMath) to protect shortcode content
+ * from having merge tags replaced before the shortcode is processed.
+ *
+ * @since TBD
+ *
+ * @param bool                 $should_replace Whether to replace merge tags. Default: true.
+ * @param string               $content        The content being processed.
+ * @param array                $form           Gravity Forms form array.
+ * @param array                $entry          Gravity Forms entry array.
+ * @param \GV\Template_Context $gravityview    The GravityView template context instance.
+ */
+$should_replace_variables = apply_filters( 'gravityview/fields/custom/replace_variables', true, $content, $form, $entry, $gravityview );
+
 // Replace the variables
-$content = GravityView_API::replace_variables( $content, $form, $entry, false, true, false );
+if ( $should_replace_variables ) {
+	$content = GravityView_API::replace_variables( $content, $form, $entry, false, true, false );
+}
 
 /**
  * Decode brackets in shortcodes, rendering them inert (escape brackets).
