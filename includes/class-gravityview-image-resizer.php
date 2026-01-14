@@ -30,6 +30,23 @@ class GravityView_Image_Resizer {
 	const FAIL_TTL = 300;
 
 	/**
+	 * Default quality for resized images.
+	 *
+	 * 	Sweet spot: Visually good enough,
+	 * 	Significant file size savings compared to 90–100.
+	 *
+	 * @since TODO
+	 */
+	const DEFAULT_QUALITY = 80;
+
+	/**
+	 * Whether retina resizing is enabled by default.
+	 *
+	 * @since TODO
+	 */
+	const DEFAULT_RETINA = true;
+
+	/**
 	 * Register filters and actions.
 	 *
 	 * @since TODO
@@ -65,8 +82,8 @@ class GravityView_Image_Resizer {
 			return $image_atts;
 		}
 
-		$width = isset( $image_atts['width'] ) ? (int) $image_atts['width'] : 0;
-		if ( $width <= 0 ) {
+		$display_width = isset( $image_atts['width'] ) ? (int) $image_atts['width'] : 0;
+		if ( $display_width <= 0 ) {
 			return $image_atts;
 		}
 
@@ -109,7 +126,10 @@ class GravityView_Image_Resizer {
 			return $image_atts;
 		}
 
-		if ( $image_stats['width'] <= $width ) {
+		$retina_enabled = $this->is_retina_enabled( $entry, $field_settings, $context );
+		$target_width   = $retina_enabled ? ( $display_width * 2 ) : $display_width;
+
+		if ( $image_stats['width'] <= $target_width ) {
 			return $image_atts;
 		}
 
@@ -123,41 +143,36 @@ class GravityView_Image_Resizer {
 		}
 
 		$file_key = $this->get_file_key( $index );
-		$size_key = 'w' . $width;
+		$size_key = 'w' . $target_width;
 
 		$cached = $this->get_cached_size( $entry_id, $field_id, $file_key, $size_key, $source_sig );
 		if ( ! empty( $cached ) ) {
-			gravityview()->log->debug( 'Image resize cache hit', array( 'entry_id' => $entry_id, 'field_id' => $field_id, 'width' => $width ) );
+			gravityview()->log->debug( 'Image resize cache hit', [ 'entry_id' => $entry_id, 'field_id' => $field_id, 'width' => $target_width ] );
 			$image_atts['src'] = $cached['url'];
-			if ( ! empty( $cached['height'] ) ) {
-				$image_atts['height'] = (int) $cached['height'];
-			}
-			if ( ! empty( $cached['width'] ) ) {
-				$image_atts['width'] = (int) $cached['width'];
-			}
+			$this->apply_display_dimensions( $image_atts, $cached, $display_width, $retina_enabled );
 			return $image_atts;
 		}
 
-		if ( $this->has_recent_failure( $entry_id, $field_id, $file_key, $width, $source_sig ) ) {
+		if ( $this->has_recent_failure( $entry_id, $field_id, $file_key, $target_width, $source_sig ) ) {
 			gravityview()->log->debug(
 				'Image resize skipped due to recent failure',
-				array(
+				[
 					'entry_id' => $entry_id,
 					'field_id' => $field_id,
-					'width'    => $width,
-				)
+					'width'    => $target_width,
+				]
 			);
 			return $image_atts;
 		}
 
-		if ( ! $this->acquire_lock( $entry_id, $field_id, $file_key, $width ) ) {
+		if ( ! $this->acquire_lock( $entry_id, $field_id, $file_key, $target_width ) ) {
 			return $image_atts;
 		}
 
 		try {
-			$resized = $this->resize_image( $local_path, $entry_id, $field_id, $width, $entry, $source_sig );
+			$resized = $this->resize_image( $local_path, $entry_id, $field_id, $target_width, $entry, $source_sig );
 		} finally {
-			$this->release_lock( $entry_id, $field_id, $file_key, $width );
+			$this->release_lock( $entry_id, $field_id, $file_key, $target_width );
 		}
 
 		if ( is_wp_error( $resized ) || empty( $resized['url'] ) ) {
@@ -189,12 +204,7 @@ class GravityView_Image_Resizer {
 		);
 
 		$image_atts['src'] = $resized['url'];
-		if ( ! empty( $resized['height'] ) ) {
-			$image_atts['height'] = (int) $resized['height'];
-		}
-		if ( ! empty( $resized['width'] ) ) {
-			$image_atts['width'] = (int) $resized['width'];
-		}
+		$this->apply_display_dimensions( $image_atts, $resized, $display_width, $retina_enabled );
 
 		return $image_atts;
 	}
@@ -221,6 +231,68 @@ class GravityView_Image_Resizer {
 		}
 
 		return isset( $image_atts['src'] ) ? $image_atts['src'] : '';
+	}
+
+	/**
+	 * Filters whether retina resizing is enabled.
+	 *
+	 * @since TODO
+	 *
+	 * @param bool             $retina_enabled Whether retina resizing is enabled.
+	 * @param array            $entry          Entry data.
+	 * @param array            $field_settings Field settings.
+	 * @param Template_Context $context        Template context.
+	 *
+	 * @return bool
+	 */
+	private function is_retina_enabled( $entry, $field_settings, $context ) {
+		$retina_enabled = apply_filters(
+			'gk/gravityview/image-resize/retina',
+			self::DEFAULT_RETINA,
+			$entry,
+			$field_settings,
+			$context
+		);
+
+		return (bool) $retina_enabled;
+	}
+
+	/**
+	 * Applies display dimensions to image attributes.
+	 *
+	 * @since TODO
+	 *
+	 * @param array $image_atts     Image attributes, by reference.
+	 * @param array $resized        Resized image metadata.
+	 * @param int   $display_width  Intended display width.
+	 * @param bool  $retina_enabled Whether retina resizing is enabled.
+	 *
+	 * @return void
+	 */
+	private function apply_display_dimensions( &$image_atts, $resized, $display_width, $retina_enabled ) {
+		$resized_width  = isset( $resized['width'] ) ? (int) $resized['width'] : 0;
+		$resized_height = isset( $resized['height'] ) ? (int) $resized['height'] : 0;
+
+		if ( $retina_enabled && $display_width > 0 && $resized_width > 0 ) {
+			$image_atts['width'] = (int) $display_width;
+
+			if ( $resized_height > 0 ) {
+				$scaled_height = (int) round( $resized_height * ( $display_width / $resized_width ) );
+				if ( $scaled_height > 0 ) {
+					$image_atts['height'] = $scaled_height;
+				}
+			}
+
+			return;
+		}
+
+		if ( $resized_height > 0 ) {
+			$image_atts['height'] = $resized_height;
+		}
+
+		if ( $resized_width > 0 ) {
+			$image_atts['width'] = $resized_width;
+		}
 	}
 
 	/**
