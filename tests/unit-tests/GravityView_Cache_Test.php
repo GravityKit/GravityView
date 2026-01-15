@@ -86,16 +86,16 @@ class GravityView_Cache_Test extends GV_UnitTestCase {
 				'form_id' => $form['id'],
 			)
 		);
-		$gv_data = GravityView_View_Data::getInstance();
-		if ( ! $gv_data->views->contains( $view_id ) ) {
-			$gv_data->views->add( \GV\View::by_id( $view_id ) );
-		}
+		$original_gv_data = GravityView_View_Data::$instance;
+		GravityView_View_Data::$instance = null;
+		$gv_data = GravityView_View_Data::getInstance( $view_id );
 
 		try {
 			do_action( $hook_name, $form, $entry['id'], $edit_entry_render, $gv_data );
 			$this->assertTrue( $cache->in_blocklist( $form['id'] ) );
 		} finally {
 			$cache->blocklist_remove( $form['id'] );
+			GravityView_View_Data::$instance = $original_gv_data;
 		}
 	}
 }
