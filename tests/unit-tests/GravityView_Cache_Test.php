@@ -50,6 +50,13 @@ class GravityView_Cache_Test extends GV_UnitTestCase {
 		$this->assertNull( $cache->get(), 'Cache was not deleted by invalidation (transients object cache)' );
 	}
 
+	/**
+	 * @covers GravityView_Cache::entry_updated()
+	 * @covers GravityView_Cache::blocklist_add()
+	 * @covers GravityView_Cache::in_blocklist()
+	 *
+	 * @since TODO
+	 */
 	public function test_edit_entry_after_update_adds_form_to_blocklist() {
 		$form  = $this->factory->form->create_and_get();
 		$entry = $this->factory->entry->create_and_get(

@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+* View cache not clearing after editing entries via GravityView Edit Entry.
+
 #### 💻 Developer Updates
 * Added `gk/gravityview/delete-entry/can-delete` filter to control whether a user can delete an entry.
 * Added `gk/gravityview/edit-entry/lock-dialog/show-request-control` filter to control visibility of the Request Control button in the entry lock dialog.

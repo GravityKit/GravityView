@@ -77,3 +77,4 @@ test-results/
 wp-hooks-docs/.docusaurus/
 wp-hooks-docs/build/
 wp-hooks-docs/node_modules/
+/claudedocs
