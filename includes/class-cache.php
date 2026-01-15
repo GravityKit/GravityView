@@ -80,6 +80,8 @@ class GravityView_Cache {
 		 */
 		add_action( 'gravityview_clear_entry_cache', array( $this, 'entry_property_changed' ) );
 
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'entry_updated' ), 10, 2 );
+
 		add_action( 'gform_after_update_entry', array( $this, 'entry_updated' ), 10, 2 );
 
 		add_action( 'gform_entry_created', array( $this, 'entry_created' ), 10, 2 );
