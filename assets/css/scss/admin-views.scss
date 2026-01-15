@@ -1187,14 +1187,24 @@ $gv-overlay-index: 10000;
 	}
 }
 
-// Ensure dialog is below admin bar in normal mode.
+// Ensure dialog is below admin bar.
 .admin-bar .gv-dialog {
 	top: 32px !important;
-}
 
-.admin-bar .gv-dialog.gv-dialog-expanded {
-	top: calc(32px + 2.5vh) !important;
-	height: calc(95vh - 32px) !important;
+	&.gv-dialog-expanded {
+		top: calc(32px + 2.5vh) !important;
+		height: calc(95vh - 32px) !important;
+	}
+
+	// Mobile admin bar is taller (46px vs 32px on desktop).
+	@media (max-width: 782px) {
+		top: 46px !important;
+
+		&.gv-dialog-expanded {
+			top: calc(46px + 2.5vh) !important;
+			height: calc(95vh - 46px) !important;
+		}
+	}
 }
 
 /** When the dialog is expanded, the CodeMirror editor should be full-width and as tall as it wants to be. */

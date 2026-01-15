@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+* Fixed Search Bar Settings modal not scrolling properly in expanded mode and dialog appearing behind the admin bar on smaller viewports.
+
 #### 💻 Developer Updates
 * Added `gk/gravityview/delete-entry/can-delete` filter to control whether a user can delete an entry.
 * Added `gk/gravityview/edit-entry/lock-dialog/show-request-control` filter to control visibility of the Request Control button in the entry lock dialog.
