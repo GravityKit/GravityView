@@ -72,24 +72,30 @@ class GravityView_Cache_Test extends GV_UnitTestCase {
 
 		$hook_name = 'gravityview/edit_entry/after_update';
 
-		global $wp_filter;
-		$original_hook = $wp_filter[ $hook_name ] ?? null;
-
-		remove_all_actions( $hook_name );
-		add_action( $hook_name, array( $cache, 'entry_updated' ), 10, 2 );
-
-		try {
-			do_action( $hook_name, $form, $entry['id'], null, null );
-		} finally {
-			if ( null === $original_hook ) {
-				unset( $wp_filter[ $hook_name ] );
-			} else {
-				$wp_filter[ $hook_name ] = $original_hook;
-			}
+		if ( false === has_action( $hook_name, array( $cache, 'entry_updated' ) ) ) {
+			add_action( $hook_name, array( $cache, 'entry_updated' ), 10, 2 );
 		}
 
-		$this->assertTrue( $cache->in_blocklist( $form['id'] ) );
+		$this->assertNotFalse( has_action( $hook_name, array( $cache, 'entry_updated' ) ) );
 
-		$cache->blocklist_remove( $form['id'] );
+		$edit_entry_render = new GravityView_Edit_Entry_Render( GravityView_Edit_Entry::getInstance() );
+		$edit_entry_render->entry = $entry;
+
+		$view_id = $this->factory->view->create(
+			array(
+				'form_id' => $form['id'],
+			)
+		);
+		$gv_data = GravityView_View_Data::getInstance();
+		if ( ! $gv_data->views->contains( $view_id ) ) {
+			$gv_data->views->add( \GV\View::by_id( $view_id ) );
+		}
+
+		try {
+			do_action( $hook_name, $form, $entry['id'], $edit_entry_render, $gv_data );
+			$this->assertTrue( $cache->in_blocklist( $form['id'] ) );
+		} finally {
+			$cache->blocklist_remove( $form['id'] );
+		}
 	}
 }
