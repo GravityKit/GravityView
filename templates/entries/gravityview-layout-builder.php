@@ -44,7 +44,7 @@ if ( $back_link ) {
 						<?php
 						if ( ! empty( $areas ) ) {
 							foreach ( $areas as $area ) {
-								foreach ( $gravityview->fields->by_position( $zone . '_' . $area['areaid'] )->all() as $field ) {
+								foreach ( $gravityview->fields->by_position( $zone . '_' . $area['areaid'] )->by_visible( $gravityview->view )->all() as $field ) {
 									echo $gravityview->template->the_field( $field, $entry );
 								}
 							}
