@@ -1854,10 +1854,12 @@ class GravityView_frontend {
 		 * @param array $not_sortable Array of field types that aren't sortable.
 		 * @param string $field_type Field type to check whether the field is sortable.
 		 * @param array $form Gravity Forms form.
+		 * @param string $field_id Gravity Forms field ID (might be the same as field_type).
 		 */
-		$not_sortable = apply_filters( 'gravityview/sortable/field_blocklist', $not_sortable, $field_type, $form );
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blocklist', $not_sortable, $field_type, $form, $field_id );
 
-		if ( in_array( $field_type, $not_sortable ) ) {
+		$fields = array_unique( [ $field_id, $field_type ] );
+		if ( array_intersect( $fields, $not_sortable ) ) {
 			return false;
 		}
 

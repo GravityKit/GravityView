@@ -1246,6 +1246,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 							$left = new GF_Query_Call( $function_name, $parameters );
 						}
+					} elseif ( $this->is_repeater_field( $filter ) ) {
+						$field = GFAPI::get_field( $filter['form_id'] ?? 0, $filter['key'] ?? 0 );
+						if ( ! $field ) {
+							continue;
+						}
+
+						$repeater_conditions = [];
+						foreach ( $this->get_nested_fields( $field ) as $sub_field ) {
+							$repeater_conditions[] = new GF_Query_Condition(
+								new GF_Query_Column( $sub_field ),
+								$search_condition->operator,
+								$search_condition->right
+							);
+						}
+						if ( $repeater_conditions ) {
+							$merged_condition    = GF_Query_Condition::_or( ...$repeater_conditions );
+							$search_conditions[] = $merged_condition;
+							continue;
+						}
 					}
 
 					if ( $view->joins && GF_Query_Column::META == $left->field_id ) {
@@ -1358,6 +1377,43 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $field && \GFCommon::is_product_field( $field->type );
 	}
 
+	/**
+	 * Whether the field in the filter is a repeater field.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $filter The filter object.
+	 *
+	 * @return bool
+	 */
+	private function is_repeater_field( array $filter ): bool {
+		$field = GFAPI::get_field( $filter['form_id'] ?? 0, $filter['key'] ?? 0 );
+
+		return $field instanceof GF_Field_Repeater;
+	}
+
+	/**
+	 * Returns the nested field IDs of fields that have values.
+	 *
+	 * @since $ver$
+	 *
+	 * @param GF_Field $field The field to retrieve the nested field IDs for.
+	 *
+	 * @return int[] The nested field ID's.
+	 */
+	private function get_nested_fields( GF_Field $field ): array {
+		$result = [];
+		foreach ( $field->fields ?? [] as $sub_field ) {
+			if ( ! $sub_field instanceof GF_Field_Repeater ) {
+				$result[] = [ $sub_field->id ];
+				continue;
+			}
+
+			$result[] = $this->get_nested_fields( $sub_field );
+		}
+
+		return array_merge( [], ...$result );
+	}
 	/**
 	 * Convert $_GET/$_POST key to the field/meta ID
 	 *

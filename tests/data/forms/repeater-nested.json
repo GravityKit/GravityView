@@ -1,0 +1,166 @@
+{
+    "0": {
+        "title": "A Nested Repeater Form",
+        "description": "This is a form with a nested repeater field.",
+        "labelPlacement": "top_label",
+        "descriptionPlacement": "below",
+        "button": {
+            "type": "text",
+            "text": "Submit",
+            "imageUrl": ""
+        },
+        "fields": [
+            {
+                "type": "text",
+                "id": 1,
+                "label": "A Text Field",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "inputs": null,
+                "formId": 65,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "inputType": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "choices": "",
+                "conditionalLogic": "",
+                "productField": "",
+                "enablePasswordInput": "",
+                "maxLength": "",
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "enableCalculation": "",
+                "disableQuantity": false,
+                "displayAllCategories": false,
+                "useRichTextEditor": false
+            },
+            {
+                "type": "repeater",
+                "id": 2,
+                "label": "Contact Repeater",
+                "formId": 65,
+                "fields": [
+                    {
+                        "type": "text",
+                        "id": 3,
+                        "label": "Name",
+                        "formId": 65
+                    },
+                    {
+                        "type": "email",
+                        "id": 4,
+                        "label": "Email",
+                        "formId": 65
+                    },
+                    {
+                        "type": "repeater",
+                        "id": 5,
+                        "label": "Phones",
+                        "formId": 65,
+                        "fields": [
+                            {
+                                "type": "number",
+                                "id": 6,
+                                "label": "Number",
+                                "formId": 65
+                            },
+                            {
+                                "type": "text",
+                                "id": 7,
+                                "label": "Type",
+                                "formId": 65
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "number",
+                "id": 8,
+                "label": "A Number Field",
+                "adminLabel": "",
+                "isRequired": false,
+                "size": "medium",
+                "errorMessage": "",
+                "inputs": null,
+                "numberFormat": "decimal_dot",
+                "formId": 65,
+                "description": "",
+                "allowsPrepopulate": false,
+                "inputMask": false,
+                "inputMaskValue": "",
+                "inputType": "",
+                "labelPlacement": "",
+                "descriptionPlacement": "",
+                "subLabelPlacement": "",
+                "placeholder": "",
+                "cssClass": "",
+                "inputName": "",
+                "visibility": "visible",
+                "noDuplicates": false,
+                "defaultValue": "",
+                "choices": "",
+                "conditionalLogic": "",
+                "enableCalculation": false,
+                "rangeMin": "",
+                "rangeMax": "",
+                "productField": "",
+                "multipleFiles": false,
+                "maxFiles": "",
+                "calculationFormula": "",
+                "calculationRounding": "",
+                "disableQuantity": false,
+                "displayAllCategories": false,
+                "useRichTextEditor": false
+            }
+        ],
+        "version": "2.1.1.25",
+        "id": 65,
+        "useCurrentUserAsAuthor": true,
+        "postContentTemplateEnabled": false,
+        "postTitleTemplateEnabled": false,
+        "postTitleTemplate": "",
+        "postContentTemplate": "",
+        "lastPageButton": null,
+        "pagination": null,
+        "firstPageCssClass": null,
+        "confirmations": [
+            {
+                "id": "5899c6bd186b0",
+                "name": "Default Confirmation",
+                "isDefault": true,
+                "type": "message",
+                "message": "Thanks for contacting us! We will get in touch with you shortly.",
+                "url": "",
+                "pageId": "",
+                "queryString": ""
+            }
+        ],
+        "notifications": [
+            {
+                "id": "5899c6bce5d7d",
+                "to": "{admin_email}",
+                "name": "Admin Notification",
+                "event": "form_submission",
+                "toType": "email",
+                "subject": "New submission from {form_title}",
+                "message": "{all_fields}"
+            }
+        ]
+    },
+    "version": "2.1.2.15"
+}

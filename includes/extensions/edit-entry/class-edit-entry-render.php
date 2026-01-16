@@ -714,7 +714,7 @@ class GravityView_Edit_Entry_Render {
 	private function process_save_process_files( $form_id ) {
 
 		// Loading files that have been uploaded to temp folder
-		$files = GFCommon::json_decode( stripslashes( RGForms::post( 'gform_uploaded_files' ) ) );
+		$files = GFCommon::json_decode( stripslashes( GFForms::post( 'gform_uploaded_files' ) ) );
 		if ( ! is_array( $files ) ) {
 			$files = array();
 		}

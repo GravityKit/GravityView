@@ -81,6 +81,12 @@
 		</properties>
 	</rule>
 
+	<rule ref="Squiz.Commenting.FunctionComment">
+		<properties>
+			<property name="skipIfInheritdoc" value="true"/>
+		</properties>
+	</rule>
+
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">

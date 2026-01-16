@@ -818,6 +818,4 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 		remove_all_filters( $bypass_filter );
 		remove_all_filters( $extensions_filter );
 	}
-
-
 }

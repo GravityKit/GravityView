@@ -1,5 +1,7 @@
 <?php
 
+use GV\Core;
+
 defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 
 /**
@@ -402,7 +404,7 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		$this->assertGreaterThanOrEqual(2, count($matches[0]));
 
 		$this->assertEquals( '1', $entry1->as_entry()['is_read'] );
-		$this->assertEquals( '1', $entry1->as_entry()['is_read'] );
+		$this->assertEquals( '1', $entry2->as_entry()['is_read'] );
 
 		// Custom read label can be set via filter.
 		$filtered_read_label_filter = 'Filtered - Custom Read Label';
@@ -455,5 +457,192 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 		remove_all_filters( 'gravityview_use_cache' );
+	}
+
+	/**
+	 * Tests for repeater fields on Table view.
+	 *
+	 * @since $ver$
+	 */
+	public function test_repeater_table_view(): void {
+		$form = $this->factory->form->import_and_get( 'repeater-nested.json' );
+
+		$view = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id'    => '1',
+						'label' => 'Text Field',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '2',
+						'label' => 'Contact Repeater',
+						'max_results' => 1,
+						'show_more_results' => 1,
+					],
+				],
+			],
+			'settings'    => [
+				'show_only_approved' => 0,
+			],
+		] );
+
+		$view = \GV\View::from_post( $view );
+		$view->settings->set( 'sort_columns', true );
+
+		$this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'1'       => 'Entry One',
+			'2'       => [
+				[
+					'3' => 'John Doe',
+					'4' => 'john@example.com',
+					'5' => [
+						[
+							'6' => '1234567890',
+							'7' => 'mobile',
+						],
+						[
+							'6' => '9876543210',
+							'7' => 'fax',
+						],
+					],
+				],
+				[
+					'3' => 'Jane Doe',
+					'4' => 'jane@example.com',
+					'5' => [
+						[
+							'6' => '2345678901',
+							'7' => 'mobile',
+						],
+					],
+				],
+			],
+			'8' => 100,
+		] );
+
+		$renderer = new \GV\View_Renderer();
+		$request = new \GV\Mock_Request();
+		$request->returns['is_view'] = $view;
+		Core::get()->request = $request;
+		$output = $renderer->render( $view, $request );
+
+		// Ensure no sort link for the Repeater field.
+		self::assertStringContainsString(
+			'data-label="Contact Repeater"><span class="gv-field-label">Contact Repeater</span>',
+			$output
+		);
+
+		// Limiting to one (nested) result, so we don't see the fax address or jane's results.
+		self::assertStringContainsString( '1234567890', $output );
+		self::assertStringNotContainsString( '9876543210', $output );
+		self::assertStringNotContainsString( '2345678901', $output );
+
+		// Showing "show more results"
+		self::assertStringContainsString( '1 more result', $output );
+
+		// Not showing any Gravity Forms inline styles.
+		self::assertNotRegExp( "/(class='gfield_repeater(_(label|value))?')\s+style=/i", $output );
+
+		$hide_nested_repeaters_view = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id'    => '1',
+						'label' => 'Text Field',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '2',
+						'label' => 'Contact Repeater',
+						'hide_nested_repeater_fields' => 1,
+					],
+				],
+			],
+			'settings'    => [
+				'show_only_approved' => 0,
+			],
+		] );
+
+		$hide_nested_repeaters_view = \GV\View::from_post( $hide_nested_repeaters_view );
+		$request->returns['is_view'] = $hide_nested_repeaters_view;
+		Core::get()->request = $request;
+		$hidden_output = $renderer->render( $hide_nested_repeaters_view, $request );
+
+		self::assertStringNotContainsString( 'more result', $hidden_output );
+		self::assertStringNotContainsString( '1234567890', $hidden_output );
+		self::assertStringNotContainsString( '9876543210', $hidden_output );
+		self::assertStringNotContainsString( '2345678901', $hidden_output );
+
+		$nested_fields_view = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id'    => '1',
+						'label' => 'Text Field',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '3',
+						'label' => 'Name',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '4',
+						'label' => 'Email',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '6',
+						'label' => 'Number',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '7',
+						'label' => 'Type',
+					],
+				],
+			],
+			'settings'    => [
+				'show_only_approved' => 0,
+			],
+		] );
+
+
+		$this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'1'       => 'Entry Two',
+			'2'       => [
+				[
+					'3' => 'Joe Doe',
+					'4' => 'joe@example.com',
+				],
+			],
+			'8' => 50,
+		] );
+
+		$nested_fields_view = \GV\View::from_post( $nested_fields_view );
+		$request->returns['is_view'] = $nested_fields_view;
+		Core::get()->request = $request;
+		$nested_output = $renderer->render( $nested_fields_view, $request );
+
+		// Two entries that have data-row="0", alt and not.
+		self::assertStringContainsString( '<tr class="alt" data-row="0">', $nested_output );
+		self::assertStringContainsString( '<tr class="" data-row="0">', $nested_output );
+
+		// One entry has only a single row, which should not render ANY `rowspan=` attributes.
+		// The regex has a negative lookup on "rowspan". It only matches a tr that does NOT have rowspan.
+		self::assertRegExp( '/<tr class="alt" data-row="0">(?:(?!rowspan).)*?<\/tr>/is', $nested_output );
+		// The other entry has nested values, so the first row should 100% have rowspan.
+		self::assertRegExp( '/<tr class="" data-row="0">(?:(?!<\/tr>).)*?rowspan.*?<\/tr>/is', $nested_output );
+
+		$form_id = $form['id'] ?? 0;
+		self::assertStringContainsString( "rowspan=\"3\" class=\"gv-field-{$form_id}-1\"", $nested_output );
+		self::assertStringContainsString( "rowspan=\"2\" class=\"gv-field-{$form_id}-3\"", $nested_output );
+		self::assertStringContainsString( "rowspan=\"2\" class=\"gv-field-{$form_id}-4\"", $nested_output );
 	}
 }

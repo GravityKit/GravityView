@@ -205,8 +205,8 @@ abstract class GravityView_Admin_View_Item {
 
 		$nonexistent_form_field = $form && $this->id && preg_match( '/^\d+\.\d+$|^\d+$/', $this->id ) && ! gravityview_get_field( $form, $this->id );
 
-		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
-
+		$is_sub_field = 'field' === ( $this->item['sub_type'] ?? null );
+		if ( $this->item['icon'] ) {
 			$has_gf_icon  = ( false !== strpos( $this->item['icon'], 'gform-icon' ) );
 			$has_dashicon = ( false !== strpos( $this->item['icon'], 'dashicons' ) );
 
@@ -225,8 +225,10 @@ abstract class GravityView_Admin_View_Item {
 			}
 
 			$field_icon .= ' ';
-		} elseif ( \GV\Utils::get( $this->item, 'parent' ) ) {
-			$field_icon = '<i class="gv-icon gv-icon-level-down"></i>' . ' ';
+		}
+
+		if ( $this->is_child() && ! $this->is_parent() ) {
+			$field_icon = '<i class="gv-icon gv-icon-level-down"></i> ';
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gk-gravityview' ), $label ) . '</button>';
@@ -278,9 +280,19 @@ abstract class GravityView_Admin_View_Item {
 
 		$data_form_id = $form ? ' data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
-		$data_parent_label = ! empty( $this->item['parent'] ) ? ' data-parent-label="' . esc_attr( $this->item['parent']['label'] ) . '"' : '';
+		$parent_label_attr = esc_attr( $this->item['parent']['label'] ?? '' );
+		$data_parent_label = ! empty( $this->item['parent'] ) ? ' data-parent-label="' . $parent_label_attr . '"' : '';
 
-		$output = '<div data-fieldid="' . esc_attr( $this->id ) . '" ' . $data_form_id . $data_parent_label . ' data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '">' . $output . $this->item['settings_html'] . '</div>';
+		$style = '';
+		if ( $this->is_child() ) {
+			$style = sprintf(
+				' style="--field-level: %s; --parent-label: \'%s\';"',
+				$this->get_nesting_level(),
+				$parent_label_attr,
+			);
+		}
+
+		$output = '<div data-fieldid="' . esc_attr( $this->id ) . '" ' . $data_form_id . $data_parent_label . ' data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '"' . $style . '>' . $output . $this->item['settings_html'] . '</div>';
 
 		return $output;
 	}
@@ -357,5 +369,36 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected function get_title( string $label ): string {
 		return $label;
+	}
+
+	/**
+	 * Returns whether this field is a parent field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether this field is a parent field.
+	 */
+	protected function is_parent(): bool {
+		return false;
+	}
+
+	/**
+	 * Returns whether this field has a parent.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether this field is a child field.
+	 */
+	protected function is_child(): bool {
+		return (bool) ( $this->item['parent'] ?? null );
+	}
+
+	/**
+	 * Returns the nesting level for this field.
+	 * @since $ver$
+	 * @return int The nesting level.
+	 */
+	protected function get_nesting_level(): int {
+		return $this->is_child() ? 1 : 0;
 	}
 }

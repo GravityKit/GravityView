@@ -1614,7 +1614,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
      *
 	 * @since 1.11
 	 */
-	$placeholders = array(
+	$placeholders = [
 		'value'                  => '',
 		'width'                  => '',
 		'width:style'            => '',
@@ -1624,7 +1624,9 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		'label_value:data-label' => '',
 		'class'                  => '',
 		'field_id'               => '',
-	);
+		'rowspan'                => $args['rowspan'] ?? null,
+		'row'                    => $args['row'] ?? 0,
+	];
 
 	if ( $context instanceof \GV\Template_Context ) {
 		$placeholders['value'] = \GV\Utils::get( $args, 'value', '' );

@@ -1,6 +1,8 @@
 <?php
 namespace GV;
 
+use GravityView_Field_Repeater;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -213,7 +215,7 @@ class View_Table_Template extends View_Template {
      *
      * @since 2.1
      *
-	 * @param \GV\Field            $field
+	 * @param Field                $field
 	 * @param \GV\Template_Context $context
 	 */
 	protected static function get_field_column_label( $field, $context = null ) {
@@ -242,12 +244,12 @@ class View_Table_Template extends View_Template {
 	/**
 	 * Output the entry row.
 	 *
-	 * @param \GV\Entry $entry The entry to be rendered.
-	 * @param array     $attributes The attributes for the <tr> tag
+	 * @param Entry $entry      The entry to be rendered.
+	 * @param array $attributes The attributes for the <tr> tag
 	 *
 	 * @return void
 	 */
-	public function the_entry( \GV\Entry $entry, $attributes ) {
+	public function the_entry( Entry $entry, $attributes ) {
 
 		$fields = $this->view->fields->by_position( 'directory_table-columns' )->by_visible( $this->view );
 
@@ -298,11 +300,24 @@ class View_Table_Template extends View_Template {
 		foreach ( $attributes as $attribute => $value ) {
 			$attributes[ $attribute ] = sprintf( "$attribute=\"%s\"", esc_attr( $value ) );
 		}
-		$attributes = implode( ' ', $attributes );
 
-		?>
-			<tr<?php echo $attributes ? " $attributes" : ''; ?>>
-                <?php
+		foreach ( $this->get_entry_rows( $entry, $fields ) as $r => $row ) {
+			$row_attributes = $attributes;
+			if ( ! isset( $attributes['data-row'] ) ) {
+				$row_attributes[] = sprintf( 'data-row="%d"', $r );
+			}
+
+			$row_attributes = implode( ' ', $row_attributes );
+
+			// Retrieve the entry and fields for this row only.
+			$entry = $row->entry;
+			$fields = $row->fields;
+
+			// Update the context.
+			$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
+			?>
+			<tr<?php echo $row_attributes ? " $row_attributes" : ''; ?>>
+				<?php
 
 				/**
 				 * Fires while rendering each entry row, before the cells. Can be used to insert additional table cells.
@@ -316,21 +331,23 @@ class View_Table_Template extends View_Template {
 				/**
 				 * while rendering each entry in the loop. Can be used to insert additional table cells.
 				 *
-				 * @deprecated Use `gravityview/template/table/cells/before`
-				 * @since 1.0.7
+				 * @since      1.0.7
 				 *
 				 * @param \GravityView_View $gravityview_view Current GravityView_View object
+				 *
+				 * @deprecated Use `gravityview/template/table/cells/before`
 				 */
 				do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
 
-                foreach ( $fields->all() as $field ) {
+				foreach ( $fields->all() as $field ) {
 					if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
 						if ( isset( $this->view->unions[ $entry['form_id'] ][ $field->ID ] ) ) {
 							$field = $this->view->unions[ $entry['form_id'] ][ $field->ID ];
 						} elseif ( ! $field instanceof Internal_Field ) {
-								$field = Internal_Field::from_configuration( array( 'id' => 'custom' ) );
+							$field = Internal_Field::from_configuration( [ 'id' => 'custom' ] );
 						}
 					}
+
 					$this->the_field( $field, $entry );
 				}
 
@@ -346,27 +363,29 @@ class View_Table_Template extends View_Template {
 				/**
 				 * while rendering each entry in the loop. Can be used to insert additional table cells.
 				 *
-				 * @deprecated Use `gravityview/template/table/cells/after`
-				 * @since 1.0.7
+				 * @since      1.0.7
 				 *
 				 * @param \GravityView_View $gravityview_view Current GravityView_View object
+				 *
+				 * @deprecated Use `gravityview/template/table/cells/after`
 				 */
 				do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
 
 				?>
 			</tr>
-		<?php
+			<?php
+		}
 	}
 
 	/**
 	 * Output a field cell.
 	 *
-	 * @param \GV\Field $field The field to be ouput.
-	 * @param \GV\Field $entry The entry this field is for.
+	 * @param Field $field The field to be output.
+	 * @param Entry $entry The Entry this field is for.
 	 *
 	 * @return void
 	 */
-	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
+	public function the_field( Field $field, Entry $entry ) {
 		$form         = $this->view->form;
 		$single_entry = $entry;
 
@@ -388,20 +407,28 @@ class View_Table_Template extends View_Template {
 		$source   = is_numeric( $field->ID ) ? $form : new Internal_Source();
 
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
-
 		$context        = Template_Context::from_template( $this, compact( 'field' ) );
 		$context->entry = $single_entry;
 
-		$args = array(
+		$rowspan = ( $field->rowspan ??= 1 ) > 1 ? sprintf( ' rowspan="{{ rowspan }}"',) : '';
+
+		$field_id = '{{ field_id }}';
+		if ( ( $field->row ??= 0 ) > 0 ) {
+			$field_id .= '-{{ row }}';
+		}
+
+		$args = [
 			'entry'      => $entry->as_entry(),
 			'field'      => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 			'value'      => $value,
 			'hide_empty' => false,
 			'zone_id'    => 'directory_table-columns',
-            'label'      => self::get_field_column_label( $field, $context ),
-			'markup'     => '<td id="{{ field_id }}" class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
-            'form'       => $form,
-		);
+			'label'      => self::get_field_column_label( $field, $context ),
+			'markup'     => '<td id="' . $field_id . '"' . $rowspan . ' class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
+			'form'       => $form,
+			'rowspan'    => $field->rowspan,
+			'row'        => $field->row,
+		];
 
 		/** Output. */
 		echo \gravityview_field_output( $args, $context );
@@ -526,8 +553,8 @@ class View_Table_Template extends View_Template {
 	 *
 	 * Modify of the class of a row.
 	 *
-	 * @param string                           $class The class.
-	 * @param \GV\Entry                        $entry The entry.
+	 * @param string $class The class.
+	 * @param Entry  $entry The entry.
 	 * @param \GV\Template_Context The context.
 	 *
 	 * @return string The classes.
@@ -555,5 +582,306 @@ class View_Table_Template extends View_Template {
 		 * @return string The modified class.
 		 */
 		return apply_filters( 'gravityview/template/table/entry/class', $class, Template_Context::from_template( $context->template, compact( 'entry' ) ) );
+	}
+
+	/**
+	 * Calculates the rows based on the visible fields and the available entry data.
+	 *
+	 * @param Entry            $entry  The entry.
+	 * @param Field_Collection $fields The fields.
+	 *
+	 * @return object{fields:Field_Collection, entry: Entry}[] Rows consisting of fields and the data for that row only.
+	 */
+	protected function get_entry_rows( Entry $entry, Field_Collection $fields ): array {
+		// The default result is the normal Field collection and Entry.
+		$default_row = [ (object) compact( 'fields', 'entry' ) ];
+		if ( ! $entry instanceof GF_Entry ) {
+			return $default_row;
+		}
+
+		$form_id = (int) ( $entry['form_id'] ?? 0 );
+
+		$ancestor_mapping = GravityView_Field_Repeater::get_repeater_field_ids( $form_id );
+		$active_ancestors = $this->get_active_ancestors( $ancestor_mapping, $fields );
+
+		if ( ! $active_ancestors ) {
+			return $default_row;
+		}
+
+		// Step 2: Calculate generation for each active ancestor (count of active ancestors it has).
+		$ancestor_generation = [];
+		foreach ( $active_ancestors as $ancestor ) {
+			$ancestor_parents                 = $ancestor_mapping[ $ancestor ] ?? [];
+			$active_count                     = count( array_intersect( $ancestor_parents, $active_ancestors ) );
+			$ancestor_generation[ $ancestor ] = $active_count;
+		}
+
+		// Step 3: Group fields by visible level (generation + 1, since level 0 is base).
+		$fields_by_level = [];
+		foreach ( $fields->all() as $field ) {
+			$level = isset( $field->parent_id ) ? $ancestor_generation[ $field->parent_id ] + 1 : 0;
+
+			$fields_by_level[ $level ][ $field->ID ] = $field;
+		}
+
+		ksort( $fields_by_level );
+
+		// Step 4: Find root repeaters (generation 0) and sort by generation.
+		$repeaters_by_generation = [];
+		foreach ( $ancestor_generation as $repeater => $generation ) {
+			$repeaters_by_generation[ $generation ][] = $repeater;
+		}
+
+		ksort( $repeaters_by_generation );
+
+		// Step 5: Flatten entry data into rows with cells with row-spans.
+		$data = $entry->as_entry();
+
+		// First, calculate the total row count for base field row-spans.
+		$total_row_count = $this->count_descendant_rows( $data, $repeaters_by_generation );
+
+		// Prepare base fields (level 0) with full rowspan.
+		$base_cells = [];
+		foreach ( $fields_by_level[0] ?? [] as $field_id => $field ) {
+			// Track rowspan on field.
+			$field->rowspan = $total_row_count;
+
+			$value                   = $data[ $field_id ] ?? '';
+			$base_cells[ $field_id ] = [
+				'rowspan' => $total_row_count,
+				'value'   => $value,
+			];
+		}
+
+		$flat_rows = [];
+		$this->flatten_entry_data(
+			$data,
+			$repeaters_by_generation,
+			$ancestor_mapping,
+			$fields_by_level,
+			0,
+			$base_cells,
+			$flat_rows,
+		);
+
+		// If no rows were generated, return the default.
+		if ( ! $flat_rows ) {
+			return $default_row;
+		}
+
+		$flat_rows[0] = $base_cells + $flat_rows[0];
+
+		// Step 6: Convert flat rows to row objects with Field_Collection and Entry.
+		$rows = [];
+		foreach ( $flat_rows as $row => $row_data ) {
+			$row_fields = new Field_Collection();
+
+			foreach ( $fields->all() as $field ) {
+				$field_id = $field->ID;
+
+				// Check if this field should be rendered on this row.
+				if ( ! isset( $row_data[ $field_id ] ) ) {
+					continue;
+				}
+
+				$cell_info    = $row_data[ $field_id ];
+				$field_config = $field->as_configuration();
+
+				$field          = Field::from_configuration( $field_config );
+				$field->rowspan = $cell_info['rowspan'] ?? 0;
+				$field->row     = (int) $row;
+
+				$row_fields->add( $field );
+			}
+
+			// Create entry with row-specific data.
+			$row_entry_data = $data;
+			foreach ( $row_data as $field_id => $field_data ) {
+				$row_entry_data[ $field_id ] = $field_data['value'] ?? '';
+			}
+
+			$row_entry = GF_Entry::from_entry( $row_entry_data );
+
+			$rows[] = (object) [
+				'fields' => $row_fields,
+				'entry'  => $row_entry,
+			];
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * Recursively flattens entry data into rows with rowspan information.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $data               The entry data at the current level.
+	 * @param array $repeaters_by_level Repeaters grouped by generation.
+	 * @param array $ancestor_mapping   Field ID to ancestor repeater IDs mapping.
+	 * @param array $fields_by_level    Fields grouped by visible level.
+	 * @param int   $level              The current generation being processed.
+	 * @param array $flat_rows          The output array of flattened rows (by reference).
+	 */
+	private function flatten_entry_data(
+		array $data,
+		array $repeaters_by_level,
+		array $ancestor_mapping,
+		array $fields_by_level,
+		int $level,
+		array $inherited_values,
+		array &$flat_rows
+	): void {
+		$level_fields      = $fields_by_level[ $level + 1 ] ?? [];
+		$current_repeaters = $repeaters_by_level[ $level ] ?? [];
+		$next_repeaters    = $repeaters_by_level[ $level + 1 ] ?? [];
+
+		// If no repeaters at this level, we're done recursing.
+		if ( ! $current_repeaters ) {
+			return;
+		}
+
+		foreach ( $current_repeaters as $repeater_id ) {
+			$repeater_data = $data[ $repeater_id ] ?? [];
+
+			// Ensure repeater_data is an array of items.
+			if ( ! is_array( $repeater_data ) || ! $repeater_data ) {
+				$repeater_data = [ [] ]; // Single empty item to generate one row.
+			}
+
+			foreach ( $repeater_data as $i => $item_data ) {
+				if ( ! is_array( $item_data ) ) {
+					$item_data = [];
+				}
+
+				// Calculate rowspan for this item by recursing into deeper levels.
+				$item_row_count = 1;
+
+				if ( $next_repeaters ) {
+					$item_row_count = max(
+						1,
+						$this->count_descendant_rows(
+							$item_data,
+							$repeaters_by_level,
+							$level + 1,
+						)
+					);
+				}
+
+				// Collect field values and cells for this item.
+				$item_cells  = [];
+
+				// Add fields at the current level.
+				foreach ( $level_fields as $field_id => $field ) {
+					if ( $repeater_id !== ( $field->parent_id ?? null ) ) {
+						continue;
+					}
+
+					$value                    = $item_data[ $field_id ] ?? '';
+					$item_cells[ $field_id ]  = [
+						'rowspan' => $item_row_count,
+						'value'   => $value,
+					];
+				}
+
+				if ( $next_repeaters ) {
+					// Recurse into deeper levels.
+					$this->flatten_entry_data(
+						$item_data,
+						$repeaters_by_level,
+						$ancestor_mapping,
+						$fields_by_level,
+						$level + 1,
+						$item_cells,
+						$flat_rows
+					);
+				} else {
+					if ( $i === 0 ) {
+						// We use + to avoid array_merge from resetting the integer keys.
+						$item_cells = $inherited_values + $item_cells;
+					}
+					// Leaf level - create the row.
+					$flat_rows[] = $item_cells;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Counts the number of descendant rows for rowspan calculation.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $data               The entry data at the current level.
+	 * @param array $repeaters_by_level Repeaters grouped by level.
+	 * @param int   $level              The current level being processed.
+	 *
+	 * @return int The number of rows in this subtree.
+	 */
+	protected function count_descendant_rows( array $data, array $repeaters_by_level, int $level = 0 ): int {
+		$current_repeaters = $repeaters_by_level[ $level ] ?? [];
+
+		if ( ! $current_repeaters ) {
+			return 1;
+		}
+
+		$next_level     = $level + 1;
+		$next_repeaters = $repeaters_by_level[ $next_level ] ?? [];
+
+		$total_rows = 0;
+
+		foreach ( $current_repeaters as $repeater_id ) {
+			$repeater_data = $data[ $repeater_id ] ?? [];
+
+			if ( ! is_array( $repeater_data ) || ! $repeater_data ) {
+				// Empty repeater counts as 1 row.
+				++$total_rows;
+				continue;
+			}
+
+			foreach ( $repeater_data as $item_data ) {
+				if ( ! is_array( $item_data ) ) {
+					$item_data = [];
+				}
+
+				if ( $next_repeaters ) {
+					$child_count = $this->count_descendant_rows( $item_data, $repeaters_by_level, $next_level );
+					$total_rows  += max( 1, $child_count );
+				} else {
+					++$total_rows;
+				}
+			}
+		}
+
+		return max( 1, $total_rows );
+	}
+
+	/**
+	 * Returns active ancestors (direct parent repeaters of visible fields).
+	 *
+	 * @since $ver$
+	 *
+	 * @param array            $ancestor_mapping The ancestor mapping.
+	 * @param Field_Collection $fields           The visible fields.
+	 *
+	 * @return int[] The active ancestor field IDs.
+	 */
+	private function get_active_ancestors( array $ancestor_mapping, Field_Collection $fields ): array {
+		$active_ancestors = [];
+
+		foreach ( $fields->all() as $field ) {
+			$ancestors = $ancestor_mapping[ $field->ID ] ?? [];
+			if ( ! $ancestors ) {
+				continue;
+			}
+
+			$direct_parent                      = end( $ancestors );
+			$active_ancestors[ $direct_parent ] = true;
+
+			// Keep track of the parent on the field itself.
+			$field->parent_id = $direct_parent;
+		}
+
+		return array_keys( $active_ancestors );
 	}
 }

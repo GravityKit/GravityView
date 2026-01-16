@@ -265,6 +265,11 @@ body .ui-tooltip {
 		&[data-layout="list"] .gv-fields.gv-child-field {
 			padding-top: 3px;
 			padding-bottom: 4px;
+			padding-left: calc((var(--field-level, 0) * 34px) + 48px);
+			.rtl & {
+				padding-left: revert;
+				padding-right: calc((var(--field-level, 0) * 34px) + 48px);
+			}
 		}
 
 		// Child field ↪ icon
@@ -287,24 +292,27 @@ body .ui-tooltip {
 			.rtl & {
 				padding: 7px (36px + 12px) 8px 12px;
 			}
+
 			* {
 				text-align: left;
+
 				.rtl & {
 					text-align: right;
 				}
 			}
-		}
 
-		.gform-icon,
-		.dashicons {
-			display: inline-block;
+			.gv-icon,
+			.gform-icon,
+			.dashicons {
+				display: inline-block;
 
-			margin: 0 8px 0 -36px;
-			.rtl & {
-				margin: 0 -36px 0 8px;
+				margin: 0 8px 0 -36px;
+
+				.rtl & {
+					margin: 0 -36px 0 8px;
+				}
 			}
 		}
-
 		.gv-field-info {
 			display: none;
 		}

@@ -1773,6 +1773,19 @@ hr {
 
 }
 
+.active-drop {
+	.gv-fields {
+		&[data-parent-label] {
+			h5 {
+				.gv-field-label::after {
+					content: ' (' var(--parent-label) ')';
+					color: $color-777;
+					font-weight: normal;
+				}
+			}
+		}
+	}
+}
 // End .gv-fields
 
 .ui-dialog-content,

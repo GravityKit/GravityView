@@ -229,7 +229,10 @@ abstract class GravityView_Field {
 
 		// If the field exists and is a GF_Field, return the icon.
 		if ( $gf_field && $gf_field instanceof GF_Field ) {
-			return $gf_field->get_form_editor_field_icon();
+			$icon = $gf_field->get_form_editor_field_icon();
+			if ( 'gform-icon--cog' !== $icon ) {
+				return $icon;
+			}
 		}
 
 		return $this->icon;

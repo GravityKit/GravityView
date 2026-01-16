@@ -2182,6 +2182,140 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Ensuring searching on a repeater field, searches inside its nested fields, recursively.
+	 * @since $ver$
+	 */
+	public function test_searching_repeater_fields(): void {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'repeater-nested.json' );
+
+		$view = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id'    => '1',
+						'label' => 'Text Field',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '2',
+						'label' => 'Contact Repeater',
+					],
+				],
+			],
+			'widgets'     => [
+				'header_top' => [
+					wp_generate_password( 4, false ) => [
+						'id'            => 'search_bar',
+						'search_fields' => '[{"field":"2","input":"input_text"}]',
+					],
+				],
+			],
+			'settings'    => [
+				'show_only_approved' => 0,
+			],
+		] );
+
+		$view = \GV\View::from_post( $view );
+
+		// Entry 1: John with phone numbers 1234567890 (mobile) and 9876543210 (work).
+		$this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'1'       => 'Entry One',
+			'2'       => [
+				[
+					'3' => 'John Doe',
+					'4' => 'john@example.com',
+					'5' => [
+						[
+							'6' => '1234567890',
+							'7' => 'mobile',
+						],
+					],
+				],
+			],
+			'8' => 100,
+		] );
+
+		// Entry 2: Jane with phone number 5555555555 (home).
+		$this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'1'       => 'Entry Two',
+			'2'       => [
+				[
+					'3' => 'Jane Smith',
+					'4' => 'jane@example.org',
+					'5' => [
+						[
+							'6' => '5555555555',
+							'7' => 'home',
+						],
+					],
+				],
+			],
+			'8'       => 200,
+		] );
+
+		// Entry 3: Bob with office phone and fax.
+		$this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'1'       => 'Entry Three',
+			'2'       => [
+				[
+					'3' => 'Bob Wilson',
+					'4' => 'bob@test.com',
+					'5' => [
+						[
+							'6' => '1112223333',
+							'7' => 'fax',
+						],
+					],
+				],
+			],
+			'8'       => 300,
+		] );
+
+
+		// Without any filter, should return all 3 entries.
+		$_GET = [];
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count(), 'Should return all 3 entries when no filter is applied' );
+
+		// Search for "John" - should find Entry 1 (nested field 3: Name).
+		$_GET = [ 'filter_2' => 'John' ];
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count(), 'Should find 1 entry when searching for "John" in repeater' );
+
+		// Search for "example.com" - should find Entry 1 (nested field 4: Email).
+		$_GET = [ 'filter_2' => 'example.com' ];
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count(), 'Should find 1 entry when searching for "example.com" in repeater' );
+
+		// Search for "example" - should find Entry 1 and Entry 2 (both have example in email).
+		$_GET = [ 'filter_2' => 'example' ];
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count(), 'Should find 2 entries when searching for "example" in repeater' );
+
+		// Search for "5555555555" - should find Entry 2 (nested nested field 6: Number).
+		$_GET = [ 'filter_2' => '5555555555' ];
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count(), 'Should find 1 entry when searching for phone number in nested repeater' );
+
+		// Search for "fax" - should find Entry 3 only (deeply nested field 7: Type).
+		$_GET = [ 'filter_2' => 'fax' ];
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count(), 'Should find 1 entry when searching for "fax" in deeply nested repeater' );
+
+		// Search for "nonexistent" - should find no entries.
+		$_GET = [ 'filter_2' => 'nonexistent' ];
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count(), 'Should find 0 entries when searching for nonexistent value' );
+
+		// Cleanup.
+		$_GET = [];
+	}
+
+	/**
 	 * Tests filtering of Views embedded in Single Entry layout with actual rendering.
 	 *
 	 * @covers GravityView_Widget_Search::gf_query_filter()
