@@ -2,20 +2,21 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.50\n"
+"Project-Id-Version: GravityView 2.50.1\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-13T15:14:11+00:00\n"
+"POT-Creation-Date: 2026-01-16T00:39:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
+#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -25,14 +26,17 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
+#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
+#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:409
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:198
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:199
@@ -211,6 +215,7 @@ msgstr ""
 msgid "GravityView allows you to create a custom URL structure for your Views."
 msgstr ""
 
+#. Translators: [entry_id] will be replaced by the actual merge tag.
 #: future/includes/class-gv-permalinks.php:490
 msgid "Change the slug for an entry. Make sure to at least include [entry_id] to avoid URL collisions."
 msgstr ""
@@ -266,6 +271,7 @@ msgstr ""
 msgid "There are %s unapproved entries that are not being shown."
 msgstr ""
 
+#. translators: %s is the plugin title.
 #: future/includes/class-gv-renderer.php:245
 #: includes/admin/metaboxes/views/custom-code.php:43
 #: includes/admin/metaboxes/views/placeholder.php:39
@@ -782,7 +788,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:323
 #: future/includes/class-gv-settings-view.php:354
-#: includes/class-common.php:1771
+#: includes/class-common.php:1752
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -1099,6 +1105,7 @@ msgstr ""
 msgid "Must be a valid URL. Can contain merge tags."
 msgstr ""
 
+#. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
 #: future/includes/class-gv-shortcode-gravityview.php:185
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
@@ -1328,19 +1335,19 @@ msgstr ""
 msgid "Admin Label: %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-field.php:32
+#: includes/admin/class-gravityview-admin-view-field.php:33
 msgid "Parent: %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-field.php:37
+#: includes/admin/class-gravityview-admin-view-field.php:38
 msgid "Type: %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-field.php:42
+#: includes/admin/class-gravityview-admin-view-field.php:43
 msgid "Field ID: %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-field.php:53
+#: includes/admin/class-gravityview-admin-view-field.php:54
 msgid "Form ID: %s"
 msgstr ""
 
@@ -1357,32 +1364,32 @@ msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:234
+#: includes/admin/class-gravityview-admin-view-item.php:232
 msgid "Add \"%s\""
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:238
+#: includes/admin/class-gravityview-admin-view-item.php:236
 #: includes/class-admin-views.php:1165
 msgid "Add Field"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:248
+#: includes/admin/class-gravityview-admin-view-item.php:246
 msgid "The field connected to \"%s\" was deleted from the form. The associated entry data no longer exists."
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:260
+#: includes/admin/class-gravityview-admin-view-item.php:258
 msgid "Duplicate this field"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:314
+#: includes/admin/class-gravityview-admin-view-item.php:302
 msgid "This field links to the Single Entry"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:319
+#: includes/admin/class-gravityview-admin-view-item.php:307
 msgid "This field has modified visibility"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:324
+#: includes/admin/class-gravityview-admin-view-item.php:312
 msgid "This field is hidden"
 msgstr ""
 
@@ -1835,6 +1842,7 @@ msgstr ""
 msgid "These widgets will be shown below entries."
 msgstr ""
 
+#. translators: %1$s is the vendor title.
 #: includes/admin/metaboxes/views/view-configuration.php:148
 #: includes/class-admin-views.php:1601
 #: includes/class-admin-views.php:2061
@@ -2218,22 +2226,27 @@ msgstr ""
 msgid "Go to the GravityKit menu and click on %s"
 msgstr ""
 
+#. translators: [strong]...[/strong] represents text that should be bold
 #: includes/class-admin-welcome.php:219
 msgid "If you want to [strong]create a new form[/strong], click the \"Use a Form Preset\" button"
 msgstr ""
 
+#. translators: [strong]...[/strong] represents text that should be bold
 #: includes/class-admin-welcome.php:229
 msgid "If you want to [strong]use an existing form&rsquo;s entries[/strong], select from the dropdown."
 msgstr ""
 
+#. translators: [strong]Table[/strong] and [strong]Listing[/strong] represent text that should be bold
 #: includes/class-admin-welcome.php:239
 msgid "Select the type of View you would like to create. There are two core types of Views: [strong]Table[/strong] and [strong]Listing[/strong]."
 msgstr ""
 
+#. translators: [strong]...[/strong] represents text that should be bold
 #: includes/class-admin-welcome.php:250
 msgid "[strong]Table Views[/strong] output entries as tables; a grid of data."
 msgstr ""
 
+#. translators: [strong]...[/strong] represents text that should be bold
 #: includes/class-admin-welcome.php:260
 msgid "[strong]Listing Views[/strong] display entries in a more visual layout."
 msgstr ""
@@ -2332,6 +2345,7 @@ msgstr ""
 msgid "Configure Multiple Entry, Single Entry, and Edit Entry Layouts"
 msgstr ""
 
+#. translators: [strong]Multiple Entry[/strong], [strong]Single Entry[/strong], and [strong]Edit Entry[/strong] represent text that should be bold
 #: includes/class-admin-welcome.php:457
 msgid "You can configure what fields are displayed in [strong]Multiple Entry[/strong], [strong]Single Entry[/strong], and [strong]Edit Entry[/strong] modes. These can be configured by clicking on the three associated tabs when editing a View."
 msgstr ""
@@ -2348,6 +2362,7 @@ msgstr ""
 msgid "Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field."
 msgstr ""
 
+#. translators: %1$s is a gear icon, %2$sField Settings%3$s is bold text
 #: includes/class-admin-welcome.php:472
 msgid "Click the %1$s gear icon on each field to configure the %2$sField Settings%3$s"
 msgstr ""
@@ -2385,6 +2400,7 @@ msgstr ""
 msgid "Project Lead &amp; Developer"
 msgstr ""
 
+#. translators: %1$s is ATP podcast link, %2$s is The Flop House podcast link
 #: includes/class-admin-welcome.php:601
 msgid "Zack has been developing WordPress plugins since 2008 and has been a huge Gravity Forms fan from the start. Zack is co-owner of GravityKit and he lives with his wife in Leverett, Massachusetts. He can&rsquo;t wait for the next episode of %1$s or %2$s podcasts."
 msgstr ""
@@ -2406,6 +2422,7 @@ msgstr ""
 msgid "Project Manager, Support Lead &amp; Customer&nbsp;Advocate"
 msgstr ""
 
+#. translators: %s is a link to Porto Alegre, Brazil
 #: includes/class-admin-welcome.php:614
 msgid "Rafael helps guide GravityKit development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from %s."
 msgstr ""
@@ -2436,6 +2453,7 @@ msgstr ""
 msgid "Support Specialist"
 msgstr ""
 
+#. translators: %s is a link to Spritz Veneziano
 #: includes/class-admin-welcome.php:632
 msgid "Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityKit. He will do his best to help you too, all the while sipping a %s in Northern Italy, where he currently lives with his family."
 msgstr ""
@@ -2507,6 +2525,7 @@ msgstr ""
 msgid "Want to contribute?"
 msgstr ""
 
+#. translators: %1$s and %2$s are the opening and closing tags for the GitHub link
 #: includes/class-admin-welcome.php:696
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
@@ -2515,22 +2534,27 @@ msgstr ""
 msgid "Thanks to the following open-source software:"
 msgstr ""
 
+#. translators: %1$s is a link to DataTables
 #: includes/class-admin-welcome.php:713
 msgid "%1$s - amazing tool for table data display. Many thanks!"
 msgstr ""
 
+#. translators: %1$s is a link to Flexibility
 #: includes/class-admin-welcome.php:720
 msgid "%1$s - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9"
 msgstr ""
 
+#. translators: %1$s is a link to Gamajo Template Loader
 #: includes/class-admin-welcome.php:727
 msgid "%1$s - makes it easy to load template files with user overrides"
 msgstr ""
 
+#. translators: %1$s is a link to jQuery Cookie plugin
 #: includes/class-admin-welcome.php:734
 msgid "%1$s - Access and store cookie values with jQuery"
 msgstr ""
 
+#. translators: %1$s is a link to Gravity Forms
 #: includes/class-admin-welcome.php:741
 msgid "%1$s - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!"
 msgstr ""
@@ -2539,10 +2563,12 @@ msgstr ""
 msgid "GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from www.flaticon.com"
 msgstr ""
 
+#. translators: %s is a link to vecteezy.com
 #: includes/class-admin-welcome.php:749
 msgid "GravityView uses free vector art by %s"
 msgstr ""
 
+#. translators: %1$s is a link to PHPEnkoder
 #: includes/class-admin-welcome.php:756
 msgid "%1$s script encodes the email addresses."
 msgstr ""
@@ -2551,10 +2577,12 @@ msgstr ""
 msgid "The Duplicate View functionality is based on the excellent Duplicate Post plugin by Enrico Battocchi"
 msgstr ""
 
+#. translators: %s is a link to BrowserStack
 #: includes/class-admin-welcome.php:764
 msgid "Browser testing by %s"
 msgstr ""
 
+#. translators: %s is a link to Easy Digital Downloads
 #: includes/class-admin-welcome.php:771
 msgid "%s makes auto-upgrades possible"
 msgstr ""
@@ -2690,7 +2718,7 @@ msgctxt "Indicates that a form is inactive."
 msgid "Inactive"
 msgstr ""
 
-#: includes/class-common.php:550
+#: includes/class-common.php:531
 #: includes/fields/class-gravityview-field-post-id.php:28
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/view.js:1
@@ -2698,29 +2726,29 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:1252
-#: includes/class-common.php:1321
+#: includes/class-common.php:1233
+#: includes/class-common.php:1302
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1263
+#: includes/class-common.php:1244
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: includes/class-common.php:1321
+#: includes/class-common.php:1302
 msgid "%s from now"
 msgstr ""
 
-#: includes/class-common.php:1716
+#: includes/class-common.php:1697
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1775
+#: includes/class-common.php:1756
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1909
+#: includes/class-common.php:1890
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -4605,37 +4633,6 @@ msgstr ""
 msgid "Radio Buttons"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-repeater.php:79
-msgid "Repeater"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-repeater.php:97
-msgid "Maximum results"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-repeater.php:98
-msgid "Maximum number of results to show per nesting level. Leave empty to show all results."
-msgstr ""
-
-#: includes/fields/class-gravityview-field-repeater.php:112
-msgid "Hide nested repeater results"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-repeater.php:122
-msgid "Show \"X more results\" text"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-repeater.php:123
-msgid "Display a \"X more results\" text when more results are available."
-msgstr ""
-
-#. Translators: %d is replaced with the number of remaining results.
-#: includes/fields/class-gravityview-field-repeater.php:276
-msgid "%d more result"
-msgid_plural "%d more results"
-msgstr[0] ""
-msgstr[1] ""
-
 #: includes/fields/class-gravityview-field-section.php:24
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:190
 msgid "Section"
@@ -4919,43 +4916,43 @@ msgstr ""
 msgid "Workflow Complete"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:465
+#: includes/fields/class-gravityview-field.php:462
 msgid "Link to the post"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:466
+#: includes/fields/class-gravityview-field.php:463
 msgid "Link to the post created by the entry."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:474
+#: includes/fields/class-gravityview-field.php:471
 msgid "Link to the category or tag"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:475
+#: includes/fields/class-gravityview-field.php:472
 msgid "Link to the current category or tag. \"Link to single entry\" must be unchecked."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:483
+#: includes/fields/class-gravityview-field.php:480
 msgid "Use the live post data"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:484
+#: includes/fields/class-gravityview-field.php:481
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:492
+#: includes/fields/class-gravityview-field.php:489
 msgid "Override Date Format"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:493
+#: includes/fields/class-gravityview-field.php:490
 msgid "Define how the date is displayed (using %1$sthe PHP date format%2$s)"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:510
+#: includes/fields/class-gravityview-field.php:507
 msgid "Open link in a new tab or window?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:517
+#: includes/fields/class-gravityview-field.php:514
 msgid "Open in a lightbox?"
 msgstr ""
 
@@ -4985,6 +4982,7 @@ msgstr ""
 msgid "Caution: [link]Advanced Post Creation[/link] is active for this form."
 msgstr ""
 
+#. translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:154
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
@@ -5338,7 +5336,7 @@ msgid "Feature submitted websites with screenshots."
 msgstr ""
 
 #: includes/search/class-search-field-collection.php:328
-#: includes/widgets/search-widget/class-search-widget.php:2659
+#: includes/widgets/search-widget/class-search-widget.php:2603
 msgid "Column"
 msgstr ""
 
@@ -5346,6 +5344,7 @@ msgstr ""
 msgid "Pre-Filter Choices"
 msgstr ""
 
+#. translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
 #: includes/search/fields/abstract-search-field-choices.php:112
 msgid "For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries."
 msgstr ""
@@ -5428,8 +5427,8 @@ msgstr ""
 msgid "Gravity Flow Step Status"
 msgstr ""
 
-#: includes/search/fields/class-search-field-gravity-forms.php:110
-#: includes/search/fields/class-search-field-gravity-forms.php:118
+#: includes/search/fields/class-search-field-gravity-forms.php:109
+#: includes/search/fields/class-search-field-gravity-forms.php:117
 msgid "Gravity Forms Field"
 msgstr ""
 
@@ -5692,64 +5691,64 @@ msgstr ""
 msgid "There was an error loading searchable fields. Save the View or refresh the page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1997
+#: includes/widgets/search-widget/class-search-widget.php:1941
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1998
+#: includes/widgets/search-widget/class-search-widget.php:1942
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1999
+#: includes/widgets/search-widget/class-search-widget.php:1943
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2000
+#: includes/widgets/search-widget/class-search-widget.php:1944
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2001
+#: includes/widgets/search-widget/class-search-widget.php:1945
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2002
+#: includes/widgets/search-widget/class-search-widget.php:1946
 msgid "Show a different month"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2388
+#: includes/widgets/search-widget/class-search-widget.php:2332
 msgid "Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2402
+#: includes/widgets/search-widget/class-search-widget.php:2346
 msgid "Advanced Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2405
+#: includes/widgets/search-widget/class-search-widget.php:2349
 msgid "If any Advanced Search fields exist, a link will show to toggle them."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2594
+#: includes/widgets/search-widget/class-search-widget.php:2538
 msgid "Configure Area Settings"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2620
+#: includes/widgets/search-widget/class-search-widget.php:2564
 msgid "Arrange Fields:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2622
+#: includes/widgets/search-widget/class-search-widget.php:2566
 msgid "Stacked (vertical)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2623
+#: includes/widgets/search-widget/class-search-widget.php:2567
 msgid "Side by side (horizontal)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2666
+#: includes/widgets/search-widget/class-search-widget.php:2610
 msgid "Column Settings"
 msgstr ""
 
@@ -7098,6 +7097,7 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
+#. translators: %1$s is the vendor title.
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1315
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1495
@@ -7831,6 +7831,7 @@ msgstr ""
 msgid "%s support may not be able to access this site."
 msgstr ""
 
+#. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets").
 #: vendor_prefixed/trustedlogin/client/src/Form.php:760
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""

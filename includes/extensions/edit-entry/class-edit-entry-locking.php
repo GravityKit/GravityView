@@ -362,7 +362,7 @@ class GravityView_Edit_Entry_Locking {
 			/**
 			 * Filters whether to show the Request Control button in the lock dialog.
 			 *
-			 * @since TBD
+			 * @since 2.50.1
 			 *
 			 * @param bool  $show_button Whether to show the Request Control button. Default: true for logged-in users, false for anonymous.
 			 * @param array $entry       The entry being edited.
