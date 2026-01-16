@@ -55,7 +55,7 @@ if ( ! $gravityview->entries->count() ) {
 							<?php
 							if ( ! empty( $areas ) ) {
 								foreach ( $areas as $area ) {
-									foreach ( $gravityview->fields->by_position( $zone . '_' . $area['areaid'] )->all() as $field ) {
+									foreach ( $gravityview->fields->by_position( $zone . '_' . $area['areaid'] )->by_visible( $gravityview->view )->all() as $field ) {
 										// Add current entry to the context (accessible via GravityView_frontend::getInstance()->getEntry() or GravityView_View::getInstance()->getCurrentEntry()_
 										Legacy_Context::load( [ 'entry' => $entry ] );
 

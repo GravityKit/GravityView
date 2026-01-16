@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Field visibility settings were not being respected by the Layout Builder template.
+
 = 2.50.1 on January 15, 2026 =
 
 This release fixes Search Bar settings modal display issues and a conflict with plugins using Laravel components, and adds new filters for entry deletion and edit locking control.
