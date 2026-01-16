@@ -818,7 +818,7 @@ final class GravityView_Delete_Entry {
 		/**
 		 * Filters whether the current user can delete the entry.
 		 *
-		 * @since TBD
+		 * @since 2.50.1
 		 *
 		 * @param bool  $user_can_delete Can the current user delete the current entry? Default: false.
 		 * @param array $entry           Gravity Forms entry array.

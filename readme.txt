@@ -21,10 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.50.1 on January 15, 2026 =
+
+This release fixes Search Bar settings modal display issues and a conflict with plugins using Laravel components, and adds new filters for entry deletion and edit locking control.
 
 #### 🐛 Fixed
-* Fixed Search Bar Settings modal not scrolling properly in expanded mode and dialog appearing behind the admin bar on smaller viewports.
+* Search Bar Settings modal Close button not visible and dialog appearing behind the admin bar on smaller viewports.
+* Conflict with plugins that use Laravel/Illuminate components.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/delete-entry/can-delete` filter to control whether a user can delete an entry.
